@@ -2,13 +2,13 @@
 // Created by rliu14 on 6/16/16.
 //
 
-#ifndef WVTOOLS_WVTOOLSFACADE_H
-#define WVTOOLS_WVTOOLSFACADE_H
+#pragma once
 
+#include <ostream>
 
 class WvToolsFacade {
-
+public:
+    void write_data(std::ostream &os, const std::string& prefix, const bool& scaled, const bool& headers, const bool& timestamps);
+    void write_physionet(std::ostream &os, const std::string& prefix);
 };
 
-
-#endif //WVTOOLS_WVTOOLSFACADE_H

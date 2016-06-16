@@ -60,11 +60,10 @@ int main(int argc, const char** argv) {
             WvToolsFacade facade;
 
             if (physionet) {
-
+                facade.write_physionet(cout, prefix);
             } else {
-
+                facade.write_data(cout, prefix, scaled, headers, timestamps);
             }
-
         }
     } catch (exception& e) {
         print_help(required, cerr);
