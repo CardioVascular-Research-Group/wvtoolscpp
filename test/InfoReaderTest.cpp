@@ -10,5 +10,6 @@ TEST(info_reader_test, initial) {
         InfoReader reader("data/test");
     } catch (IOException& e) {
         std::cerr << e.get_message();
+        FAIL();
     }
 }

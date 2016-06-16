@@ -6,4 +6,4 @@ set(SOURCE_FILES InfoReaderTest.cpp)
 add_executable(wvtools_test ${SOURCE_FILES})
 
 target_link_libraries(wvtools_test wvtools_lib gtest gtest_main pthread)
-file(COPY "data" DESTINATION "data")
+file(COPY "data/" DESTINATION "data")
