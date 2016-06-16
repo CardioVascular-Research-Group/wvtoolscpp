@@ -9,10 +9,7 @@ Requirements: (to build)
 
 CMake 3.5 or newer
 Boost C++ library (Program_Options)
-
-Additional requirements: (for unit tests)
-
-Googletest library
+GoogleTest library
 
 Usage: wvtools [options]
 

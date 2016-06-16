@@ -2,24 +2,25 @@
 // Created by rliu14 on 6/16/16.
 //
 
-#ifndef WVTOOLS_INFOREADER_H
-#define WVTOOLS_INFOREADER_H
+#pragma once
+
+#include "IOException.h"
 
 #include <string>
 #include <vector>
+#include <gtest/gtest.h>
 
 /**
  * Reads .info files.
  */
 class InfoReader {
 public:
-    InfoReader(const std::string& prefix);
+    InfoReader(const std::string& prefix) throw(IOException);
 private:
     double sample_rate;
     std::vector<std::string> channel_labels;
     std::vector<std::string> units;
     std::vector<double> gains;
+
+    FRIEND_TEST(info_reader_test, initial);
 };
-
-
-#endif //WVTOOLS_INFOREADER_H
