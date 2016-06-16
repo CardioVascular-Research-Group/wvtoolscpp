@@ -1,0 +1,30 @@
+WVTools, C++ Implementation
+v0.1
+Ran Liu (rliu14@jhu.edu)
+
+A C++ utility to read data from Phillips 16-bit little-endian waveform files.
+Allows for the generation of a PhysioNet header file.
+
+Requirements: (to build)
+
+CMake 3.5 or newer
+Boost C++ library (Program_Options)
+
+Additional requirements: (for unit tests)
+
+Googletest library
+
+Usage: wvtools [options]
+
+Required options:
+  -r [ --record ] arg   Record prefix of waveform data to read
+
+Allowed options:
+  -h [ --help ]           Prints program usage help
+  -u [ --unscaled ]       If this option is passed, the program prints unscaled
+                          data. Scaled is the default.
+  -p [ --physionet ]      If this option is passed, the program writes a
+                          physionet header instead of amplitudes
+  -t [ --no-timestamps ]  If this option is passed, the timestamps column is
+                          omitted
+  -h [ --no-headers ]     If this option is passed, the headers row is omitted

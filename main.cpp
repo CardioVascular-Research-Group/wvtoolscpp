@@ -30,10 +30,10 @@ int main(int argc, const char** argv) {
     po::options_description allowed("Allowed options");
     allowed.add_options()
             ("help,h", "Prints program usage help")
-            ("unscaled,u", "If this option is passed, the program prints unscaled data.")
-            ("scaled,s", "If this option is passed, the program scales the data to the units specified in the info file. (default)")
-            ("no-timestamps,nt", "If this option is passed, the timestamps column is omitted")
-            ("no-headers,nh", "If this option is passed, the headers row is omitted");
+            ("unscaled,u", "If this option is passed, the program prints unscaled data. Scaled is the default.")
+            ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
+            ("no-timestamps,t", "If this option is passed, the timestamps column is omitted")
+            ("no-headers,h", "If this option is passed, the headers row is omitted");
 
     try {
 
@@ -54,12 +54,19 @@ int main(int argc, const char** argv) {
 
             bool timestamps = argument_map.count("no-timestamps") == 0;
             bool headers = argument_map.count("no-headers") == 0;
+            bool physionet = argument_map.count("physionet") > 0;
+            bool scaled = argument_map.count("unscaled") == 0;
 
             WvToolsFacade facade;
 
+            if (physionet) {
+
+            } else {
+
+            }
+
         }
     } catch (exception& e) {
-        cerr << e.what() << endl;
         print_help(required, cerr);
         print_help(allowed, cerr);
     }
