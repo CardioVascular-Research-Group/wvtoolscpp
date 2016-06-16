@@ -57,6 +57,9 @@ int main(int argc, const char** argv) {
             bool physionet = argument_map.count("physionet") > 0;
             bool scaled = argument_map.count("unscaled") == 0;
 
+            // Could do some more input validation, but if the user wants to put in contradictory parameters,
+            // they can live with unpredictable behavior.
+
             WvToolsFacade facade;
 
             if (physionet) {

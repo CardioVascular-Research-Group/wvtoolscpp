@@ -6,7 +6,7 @@
 
 #include <boost/regex.hpp>
 using boost::regex;
-using boost::regex_match;
+using boost::regex_search;
 using boost::cmatch;
 
 using std::string;
@@ -30,19 +30,15 @@ InfoReader::InfoReader(const std::string &prefix) throw(IOException) {
         do {
             getline(file, line);
             cmatch matches;
-            if (regex_match(line.c_str(), matches, expression)) {
-                cout << "Is match: " << matches[0] << endl;
+            if (regex_search(line.c_str(), matches, expression)) {
                 sample_rate = stoi(matches[1]);
                 units.push_back(matches[2]);
                 channel_labels.push_back(matches[3]);
                 gains.push_back(stod(matches[4]));
-            } else {
-                cout << "No match!: " << line << endl;
             }
-
         } while(line.length() > 0);
     } else {
-        throw IOException("Couldn't read file");
+        throw IOException("Couldn't read info file");
     }
 }
 
