@@ -8,6 +8,9 @@
 TEST(info_reader_test, initial) {
     try {
         InfoReader reader("data/test");
+
+        EXPECT_EQ(reader.channel_labels.size(), 2);
+
     } catch (IOException& e) {
         std::cerr << e.get_message();
         FAIL();

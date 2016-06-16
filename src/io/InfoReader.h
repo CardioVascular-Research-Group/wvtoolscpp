@@ -17,7 +17,7 @@ class InfoReader {
 public:
     InfoReader(const std::string& prefix) throw(IOException);
 private:
-    double sample_rate;
+    int sample_rate;
     std::vector<std::string> channel_labels;
     std::vector<std::string> units;
     std::vector<double> gains;
