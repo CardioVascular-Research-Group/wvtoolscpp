@@ -23,10 +23,10 @@ long WvReader::size() {
 }
 
 __int16_t WvReader::next() {
-    char buffer[2];
-    file.read(buffer, 2);
+    unsigned char buffer[2];
+    file.read((char*)buffer, 2);
 
-    __int16_t result = buffer[0] | (buffer[1] << 8);
+    __int16_t result = (buffer[1] << 8) + buffer[0];
     return result;
 }
 

@@ -13,7 +13,7 @@ TEST(wv_reader_test, test_file_size) {
 
     try {
         WvReader reader("data/test");
-        EXPECT_EQ(reader.size(), 6);
+        EXPECT_EQ(reader.size(), 16);
         reader.close();
     } catch (IOException& e) {
         cerr << e.get_message();
@@ -29,10 +29,15 @@ TEST(wv_reader_test, test_file_input) {
         while (reader.has_next()) values.push_back(reader.next());
         reader.close();
 
-        EXPECT_EQ(3, values.size());
-        EXPECT_EQ(-1503, values[0]);
-        EXPECT_EQ(-20686, values[1]);
-        EXPECT_EQ(63, values[2]);
+        EXPECT_EQ(8, values.size());
+        EXPECT_EQ(206, values[0]);
+        EXPECT_EQ(100, values[1]);
+        EXPECT_EQ(11293, values[2]);
+        EXPECT_EQ(6735, values[3]);
+        EXPECT_EQ(200, values[4]);
+        EXPECT_EQ(100, values[5]);
+        EXPECT_EQ(11667, values[6]);
+        EXPECT_EQ(6735, values[7]);
 
     } catch (IOException& e) {
         cerr << e.get_message();
