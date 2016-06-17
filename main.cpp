@@ -22,7 +22,7 @@ void print_help(const po::options_description& description, ostream& os) {
 int main(int argc, const char** argv) {
 
     po::options_description required("Required options");
-    // At first, I thought this was a clever case of using function pointers to return a function from function.
+    // At first, I thought this was a clever case of using function pointers to return a function from anotherl function.
     // Then I realized it's an abomination of operator overloading.
     required.add_options()
             ("record,r", po::value<string>(), "Record prefix of waveform data to read");
@@ -72,5 +72,4 @@ int main(int argc, const char** argv) {
         print_help(required, cerr);
         print_help(allowed, cerr);
     }
-
 }

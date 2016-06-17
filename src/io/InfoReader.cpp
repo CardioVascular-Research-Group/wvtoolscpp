@@ -40,5 +40,6 @@ InfoReader::InfoReader(const std::string &prefix) throw(IOException) {
     } else {
         throw IOException("Couldn't read info file");
     }
+    file.close();
 }
 
