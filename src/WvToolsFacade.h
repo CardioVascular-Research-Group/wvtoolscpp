@@ -10,5 +10,6 @@ class WvToolsFacade {
 public:
     void write_data(std::ostream &os, const std::string& prefix, const bool& scaled, const bool& headers, const bool& timestamps);
     void write_physionet(std::ostream &os, const std::string& prefix);
+    void write_checksums(std::ostream &os, const std::string& prefix);
 };
 

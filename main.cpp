@@ -22,7 +22,7 @@ void print_help(const po::options_description& description, ostream& os) {
 int main(int argc, const char** argv) {
 
     po::options_description required("Required options");
-    // At first, I thought this was a clever case of using function pointers to return a function from anotherl function.
+    // At first, I thought this was a clever case of using function pointers to return a function from another function.
     // Then I realized it's an abomination of operator overloading.
     required.add_options()
             ("record,r", po::value<string>(), "Record prefix of waveform data to read");
@@ -32,11 +32,11 @@ int main(int argc, const char** argv) {
             ("help,h", "Prints program usage help")
             ("unscaled,u", "If this option is passed, the program prints unscaled data. Scaled is the default.")
             ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
+            ("checksums,c", "If this option is passed, the program prints the checksums for each channel")
             ("timestamps,t", "If this option is passed, the timestamps column is included")
             ("no-headers,h", "If this option is passed, the headers row is omitted");
 
     try {
-
         // Parse command line, store in argument map.
         po::options_description all("All options");
         all.add(required).add(allowed);
@@ -55,6 +55,7 @@ int main(int argc, const char** argv) {
             bool timestamps = argument_map.count("timestamps") > 0;
             bool headers = argument_map.count("no-headers") == 0;
             bool physionet = argument_map.count("physionet") > 0;
+            bool checksums = argument_map.count("checksums") > 0;
             bool scaled = argument_map.count("unscaled") == 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
@@ -64,6 +65,8 @@ int main(int argc, const char** argv) {
 
             if (physionet) {
                 facade.write_physionet(cout, prefix);
+            } else if (checksums) {
+                facade.write_checksums(cout, prefix);
             } else {
                 facade.write_data(cout, prefix, scaled, headers, timestamps);
             }

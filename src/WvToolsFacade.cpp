@@ -14,7 +14,10 @@ void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, cons
                                const bool &timestamps) {
     try {
         InfoReader info_reader(prefix);
+        WvReader wv_reader(prefix);
+
         DataWriter writer(os);
+        writer.write(info_reader, wv_reader, headers, timestamps, scaled);
     } catch (IOException& e) {
         cerr << e.get_message() << endl;
     }
@@ -23,9 +26,16 @@ void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, cons
 void WvToolsFacade::write_physionet(std::ostream &os, const std::string &prefix) {
     try {
         InfoReader info_reader(prefix);
+        WvReader wv_reader(prefix);
+
         PhysionetWriter writer(os);
     } catch (IOException& e) {
         cerr << e.get_message() << endl;
     }
+}
+
+
+void WvToolsFacade::write_checksums(std::ostream &os, const std::string &prefix) {
+
 }
 

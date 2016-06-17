@@ -13,4 +13,3 @@ private:
     std::ostream& os;
 };
 
-

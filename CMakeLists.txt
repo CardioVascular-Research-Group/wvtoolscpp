@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(wvtools)
 
-add_definitions(-std=c++11 -Wall -Wextra -pedantic)
+add_definitions(-std=c++11 -Wall -Wextra -pedantic -O3)
 
 set(SOURCE_FILES main.cpp)
 add_executable(wvtools ${SOURCE_FILES})
