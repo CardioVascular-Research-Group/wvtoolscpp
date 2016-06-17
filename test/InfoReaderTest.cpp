@@ -10,6 +10,7 @@ TEST(info_reader_test, initial) {
         InfoReader reader("data/test");
 
         EXPECT_EQ(reader.channel_labels.size(), 2);
+        EXPECT_EQ(reader.sample_rate, 125);
 
         EXPECT_EQ(reader.channel_labels[0], "ECG");
         EXPECT_EQ(reader.channel_labels[1], "PLETH");

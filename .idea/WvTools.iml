@@ -7,8 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/WvReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/ChecksumCalculatorTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/InfoReaderTest.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/ChecksumCalculatorTest.cpp" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

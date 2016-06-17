@@ -32,7 +32,7 @@ int main(int argc, const char** argv) {
             ("help,h", "Prints program usage help")
             ("unscaled,u", "If this option is passed, the program prints unscaled data. Scaled is the default.")
             ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
-            ("no-timestamps,t", "If this option is passed, the timestamps column is omitted")
+            ("timestamps,t", "If this option is passed, the timestamps column is included")
             ("no-headers,h", "If this option is passed, the headers row is omitted");
 
     try {
@@ -52,7 +52,7 @@ int main(int argc, const char** argv) {
 
             string prefix = argument_map["record"].as<string>();
 
-            bool timestamps = argument_map.count("no-timestamps") == 0;
+            bool timestamps = argument_map.count("timestamps") > 0;
             bool headers = argument_map.count("no-headers") == 0;
             bool physionet = argument_map.count("physionet") > 0;
             bool scaled = argument_map.count("unscaled") == 0;

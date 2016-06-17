@@ -22,5 +22,8 @@ private:
     std::vector<std::string> units;
     std::vector<double> gains;
 
+    friend class DataWriter;
+    friend class PhysionetWriter;
+
     FRIEND_TEST(info_reader_test, initial);
 };
