@@ -14,6 +14,7 @@ TEST(wv_reader_test, test_file_size) {
     try {
         WvReader reader("data/test");
         EXPECT_EQ(reader.size(), 6);
+        reader.close();
     } catch (IOException& e) {
         cerr << e.get_message();
         FAIL();
@@ -26,6 +27,7 @@ TEST(wv_reader_test, test_file_input) {
         std::vector<__int16_t> values;
         WvReader reader("data/test");
         while (reader.has_next()) values.push_back(reader.next());
+        reader.close();
 
         EXPECT_EQ(3, values.size());
         EXPECT_EQ(-1503, values[0]);

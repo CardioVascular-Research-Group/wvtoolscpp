@@ -10,7 +10,6 @@ using std::ios;
 using std::ifstream;
 
 WvReader::WvReader(const std::string &prefix) throw (IOException) : file(prefix + ".wv", ios::binary | ios::ate) {
-
     if (file.is_open()) {
         file_size = file.tellg();
         file.seekg(0, ios::beg);
@@ -37,6 +36,6 @@ bool WvReader::has_next() {
 }
 
 
-
-
-
+void WvReader::close() {
+    file.close();
+}

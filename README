@@ -8,7 +8,7 @@ Allows for the generation of a PhysioNet header file.
 Requirements: (to build)
 
 CMake 3.5 or newer
-Boost C++ library (Program_Options)
+Boost C++ library (Program_Options, Regex)
 GoogleTest library
 
 Usage: wvtools [options]

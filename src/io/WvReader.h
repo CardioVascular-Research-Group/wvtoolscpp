@@ -24,4 +24,3 @@ private:
     long file_size;
 };
 
-
