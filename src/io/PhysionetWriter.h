@@ -8,6 +8,9 @@
 #include "InfoReader.h"
 #include "WvReader.h"
 
+/**
+ * Writes physionet headers.
+ */
 class PhysionetWriter {
 public:
     PhysionetWriter(std::ostream& os);

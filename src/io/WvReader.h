@@ -16,6 +16,7 @@ class WvReader {
 public:
     WvReader(const std::string& prefix) throw (IOException);
     long size();
+    long num_entries();
     __int16_t next();
     bool has_next();
     void close();

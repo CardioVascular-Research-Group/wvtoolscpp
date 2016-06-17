@@ -22,6 +22,12 @@ long WvReader::size() {
     return file_size;
 }
 
+
+long WvReader::num_entries() {
+    return file_size / 2; // 2 bytes comprise a 16-bit entry.
+}
+
+
 __int16_t WvReader::next() {
     unsigned char buffer[2];
     file.read((char*)buffer, 2);
