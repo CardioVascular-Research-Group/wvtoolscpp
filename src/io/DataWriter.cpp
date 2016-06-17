@@ -34,7 +34,7 @@ void DataWriter::write(InfoReader& info_reader, WvReader& wv_reader, const bool&
         __int16_t value = wv_reader.next();
 
         if (scaled) {
-            double scaled_value = info_reader.gains[current_channel];
+            double scaled_value = info_reader.gains[current_channel] * value;
             os << scaled_value;
         } else {
             os << value;

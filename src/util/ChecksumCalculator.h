@@ -12,9 +12,9 @@
  */
 class ChecksumCalculator {
 public:
-    ChecksumCalculator(const unsigned int& num_channels);
+    ChecksumCalculator(const unsigned long& num_channels);
     void add(__int16_t value);
-    __int16_t get(const unsigned int &channel_index);
+    __int16_t get(const unsigned long &channel_index);
 private:
     unsigned long current_index;
     std::vector<__int16_t> checksums;

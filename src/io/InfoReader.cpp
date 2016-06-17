@@ -43,3 +43,8 @@ InfoReader::InfoReader(const std::string &prefix) throw(IOException) {
     file.close();
 }
 
+
+unsigned long InfoReader::num_channels() {
+    return channel_labels.size();
+}
+

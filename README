@@ -1,5 +1,5 @@
 WVTools, C++ Implementation
-v0.2 (partial implementation, still in development)
+v0.9 (partial implementation, still in development)
 Ran Liu (rliu14@jhu.edu)
 
 A C++ utility to read data from Phillips 16-bit little-endian waveform files.
@@ -17,11 +17,13 @@ Required options:
   -r [ --record ] arg   Record prefix of waveform data to read
 
 Allowed options:
-  -h [ --help ]           Prints program usage help
-  -u [ --unscaled ]       If this option is passed, the program prints unscaled
-                          data. Scaled is the default.
-  -p [ --physionet ]      If this option is passed, the program writes a
-                          physionet header instead of amplitudes
-  -t [ --no-timestamps ]  If this option is passed, the timestamps column is
-                          omitted
-  -h [ --no-headers ]     If this option is passed, the headers row is omitted
+  -h [ --help ]         Prints program usage help
+  -u [ --unscaled ]     If this option is passed, the program prints unscaled
+                        data. Scaled is the default.
+  -p [ --physionet ]    If this option is passed, the program writes a
+                        physionet header instead of amplitudes
+  -c [ --checksums ]    If this option is passed, the program prints the
+                        checksums for each channel
+  -t [ --timestamps ]   If this option is passed, the timestamps column is
+                        included
+  -h [ --no-headers ]   If this option is passed, the headers row is omitted

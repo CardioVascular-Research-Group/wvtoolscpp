@@ -16,6 +16,7 @@
 class InfoReader {
 public:
     InfoReader(const std::string& prefix) throw(IOException);
+    unsigned long num_channels();
 private:
     int sample_rate;
     std::vector<std::string> channel_labels;

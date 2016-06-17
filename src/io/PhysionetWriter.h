@@ -5,10 +5,13 @@
 #pragma once
 
 #include <ostream>
+#include "InfoReader.h"
+#include "WvReader.h"
 
 class PhysionetWriter {
 public:
     PhysionetWriter(std::ostream& os);
+    void write(InfoReader &info_reader, WvReader &wv_reader, const std::string &prefix);
 private:
     std::ostream& os;
 };
