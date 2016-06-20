@@ -15,13 +15,18 @@ using std::exception;
 using std::cerr;
 using std::string;
 
+void print_version_information(ostream& os) {
+    double version_number = 1.1;
+    os << "WvTools, version " << version_number << endl;
+    os << "Author: Ran Liu, rliu14@jhu.edu" << endl;
+}
+
 void print_help(const po::options_description& description, ostream& os) {
     os << description << endl;
 }
 
 int main(int argc, const char** argv) {
 
-    double version_number = 1.1;
 
     po::options_description required("Required options");
     // At first, I thought this was a clever case of using function pointers to return a function from another function.
@@ -54,6 +59,8 @@ int main(int argc, const char** argv) {
         if (argument_map.count("help")) {
             print_help(required, cout);
             print_help(allowed, cout);
+        } else if (argument_map.count("version")) {
+            print_version_information(cout);
         } else {
 
             string prefix = argument_map["record"].as<string>();
@@ -65,7 +72,6 @@ int main(int argc, const char** argv) {
             bool scaled = argument_map.count("unscaled") == 0;
             bool quality = argument_map.count("quality") > 0;
             bool num_channels = argument_map.count("num-channels") > 0;
-            bool version = argument_map.count("version") > 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
             // they can live with unpredictable behavior.
@@ -79,12 +85,9 @@ int main(int argc, const char** argv) {
             } else if (quality) {
                 unsigned int threshold = (unsigned)argument_map["quality"].as<int>();
                 unsigned int channel = (unsigned)argument_map["channel"].as<int>();
-
                 facade.write_quality(cout, prefix, channel, threshold);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
-            } else if (version) {
-                cout << version_number << endl;
             } else {
                 facade.write_data(cout, prefix, scaled, headers, timestamps);
             }
