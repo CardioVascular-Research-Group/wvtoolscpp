@@ -27,3 +27,7 @@ Allowed options:
   -t [ --timestamps ]   If this option is passed, the timestamps column is
                         included
   -h [ --no-headers ]   If this option is passed, the headers row is omitted
+  -q [ --quality ] arg  If this option is passed, the program outputs quality
+                        annotations with the specified threshold.
+  -x [ --channel ] arg  Quality values are emitted for the specified channel
+                        (0-indexed).

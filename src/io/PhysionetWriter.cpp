@@ -18,7 +18,7 @@ void PhysionetWriter::write(InfoReader &info_reader, WvReader &wv_reader, const 
     ChecksumCalculator calculator(info_reader.num_channels());
     while (wv_reader.has_next()) calculator.add(wv_reader.next());
 
-    // Write record line: name, # signals, # samples per signal
+    // Write record line: name, # signals, sampling frequency, # samples per signal
     os << prefix << " " << info_reader.num_channels() << " " << wv_reader.num_entries() / info_reader.num_channels() << endl;
 
     // Write signal lines

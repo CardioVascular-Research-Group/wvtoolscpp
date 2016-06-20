@@ -34,7 +34,10 @@ int main(int argc, const char** argv) {
             ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
             ("checksums,c", "If this option is passed, the program prints the checksums for each channel")
             ("timestamps,t", "If this option is passed, the timestamps column is included")
-            ("no-headers,h", "If this option is passed, the headers row is omitted");
+            ("no-headers,h", "If this option is passed, the headers row is omitted")
+            ("quality,q", po::value<int>(), "If this option is passed, the program outputs quality annotations with the specified threshold.")
+            ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
+            ("num-channels,n", "Program writes the number of channels contained in a record.");
 
     try {
         // Parse command line, store in argument map.
@@ -57,6 +60,8 @@ int main(int argc, const char** argv) {
             bool physionet = argument_map.count("physionet") > 0;
             bool checksums = argument_map.count("checksums") > 0;
             bool scaled = argument_map.count("unscaled") == 0;
+            bool quality = argument_map.count("quality") > 0;
+            bool num_channels = argument_map.count("num-channels") > 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
             // they can live with unpredictable behavior.
@@ -67,11 +72,20 @@ int main(int argc, const char** argv) {
                 facade.write_physionet(cout, prefix);
             } else if (checksums) {
                 facade.write_checksums(cout, prefix);
+            } else if (quality) {
+                unsigned int threshold = (unsigned)argument_map["quality"].as<int>();
+                unsigned int channel = (unsigned)argument_map["channel"].as<int>();
+
+                facade.write_quality(cout, prefix, channel, threshold);
+            } else if (num_channels) {
+                facade.write_num_channels(cout, prefix);
             } else {
                 facade.write_data(cout, prefix, scaled, headers, timestamps);
             }
         }
+
     } catch (exception& e) {
+        cerr << e.what() << endl;
         print_help(required, cerr);
         print_help(allowed, cerr);
     }

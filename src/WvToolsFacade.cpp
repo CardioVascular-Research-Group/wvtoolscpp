@@ -10,6 +10,7 @@ using std::endl;
 #include "io/DataWriter.h"
 #include "io/PhysionetWriter.h"
 #include "util/ChecksumCalculator.h"
+#include "util/QualityChecker.h"
 
 void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, const bool &scaled, const bool &headers,
                                const bool &timestamps) {
@@ -62,5 +63,39 @@ void WvToolsFacade::write_checksums(std::ostream &os, const std::string &prefix)
         cerr << e.get_message() << endl;
     }
 
+}
+
+void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, const unsigned int& channel, const unsigned int& threshold) {
+    try {
+        InfoReader info_reader(prefix);
+        WvReader wv_reader(prefix);
+
+        QualityChecker checker(os, threshold);
+
+        unsigned int current_index = 0;
+        while (wv_reader.has_next()) {
+            __int16_t value = wv_reader.next();
+            unsigned int current_channel = current_index++ % (unsigned int)info_reader.num_channels();
+
+            if (current_channel == channel) {
+                checker.read(value);
+            }
+        }
+        checker.flush();
+
+    } catch (IOException& e) {
+        cerr << e.get_message() << endl;
+    }
+
+}
+
+
+void WvToolsFacade::write_num_channels(std::ostream &os, const std::string &prefix) {
+    try {
+        InfoReader info_reader(prefix);
+        os << info_reader.num_channels() << endl;
+    } catch (IOException& e) {
+        cerr << e.get_message() << endl;
+    }
 }
 
