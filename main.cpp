@@ -21,6 +21,8 @@ void print_help(const po::options_description& description, ostream& os) {
 
 int main(int argc, const char** argv) {
 
+    double version_number = 1.1;
+
     po::options_description required("Required options");
     // At first, I thought this was a clever case of using function pointers to return a function from another function.
     // Then I realized it's an abomination of operator overloading.
@@ -37,7 +39,8 @@ int main(int argc, const char** argv) {
             ("no-headers,h", "If this option is passed, the headers row is omitted")
             ("quality,q", po::value<int>(), "If this option is passed, the program outputs quality annotations with the specified threshold.")
             ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
-            ("num-channels,n", "Program writes the number of channels contained in a record.");
+            ("num-channels,n", "Program writes the number of channels contained in a record.")
+            ("version,v", "Prints version information for program.");
 
     try {
         // Parse command line, store in argument map.
@@ -62,6 +65,7 @@ int main(int argc, const char** argv) {
             bool scaled = argument_map.count("unscaled") == 0;
             bool quality = argument_map.count("quality") > 0;
             bool num_channels = argument_map.count("num-channels") > 0;
+            bool version = argument_map.count("version") > 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
             // they can live with unpredictable behavior.
@@ -79,6 +83,8 @@ int main(int argc, const char** argv) {
                 facade.write_quality(cout, prefix, channel, threshold);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
+            } else if (version) {
+                cout << version_number << endl;
             } else {
                 facade.write_data(cout, prefix, scaled, headers, timestamps);
             }

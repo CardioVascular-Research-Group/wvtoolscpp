@@ -19,7 +19,7 @@ void PhysionetWriter::write(InfoReader &info_reader, WvReader &wv_reader, const 
     while (wv_reader.has_next()) calculator.add(wv_reader.next());
 
     // Write record line: name, # signals, sampling frequency, # samples per signal
-    os << prefix << " " << info_reader.num_channels() << " " << wv_reader.num_entries() / info_reader.num_channels() << endl;
+    os << prefix << " " << info_reader.num_channels() << " " << info_reader.sample_rate << " " << wv_reader.num_entries() / info_reader.num_channels() << endl;
 
     // Write signal lines
     for (unsigned long c = 0; c < info_reader.num_channels(); c++) {
