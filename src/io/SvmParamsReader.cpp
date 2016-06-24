@@ -3,3 +3,8 @@
 //
 
 #include "SvmParamsReader.h"
+
+
+SvmParamsReader::SvmParamsReader(const std::string &filename) {
+    // TODO define format.
+}

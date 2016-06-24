@@ -64,12 +64,12 @@ void WvToolsFacade::write_checksums(std::ostream &os, const std::string &prefix)
 
 }
 
-void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, const unsigned int &channel, const std::string &svm) {
+void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, const unsigned int &channel, const std::string &svm, const bool &headers) {
 
 }
 
 
-void WvToolsFacade::write_features(std::ostream &os, const std::string &prefix, const unsigned int &channel) {
+void WvToolsFacade::write_features(std::ostream &os, const std::string &prefix, const unsigned int &channel, const bool &headers) {
 
 }
 

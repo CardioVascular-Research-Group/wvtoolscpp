@@ -4,15 +4,20 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 /**
  * Reads SVM parameters.
  */
 class SvmParamsReader {
 public:
-    SvmParamsReader();
-    virtual ~SvmParamsReader();
+    SvmParamsReader(const std::string& filename);
 private:
-
+    std::vector<double> coefficients;
+    std::vector<double> means;
+    std::vector<double> sigmas;
+    double bias;
 };
 
 
