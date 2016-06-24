@@ -6,5 +6,7 @@
 
 
 SvmParamsReader::SvmParamsReader(const std::string &filename) {
-    // TODO define format.
+
+    // TODO
+
 }
