@@ -23,7 +23,7 @@ QrsOnsetReader::QrsOnsetReader(const std::string &filename) throw (IOException) 
         throw IOException("Couldn't read QRS onset file.");
     }
 
-    ifstream.close();
+    file.close();
 }
 
 
