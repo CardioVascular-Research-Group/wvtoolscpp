@@ -40,9 +40,11 @@ int main(int argc, const char** argv) {
             ("unscaled,u", "If this option is passed, the program prints unscaled data. Scaled is the default.")
             ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
             ("checksums,c", "If this option is passed, the program prints the checksums for each channel")
+            ("features,f", "If this option is passed, the program emits the feature vectors for the specified channel")
             ("timestamps,t", "If this option is passed, the timestamps column is included")
             ("no-headers,h", "If this option is passed, the headers row is omitted")
-            ("quality,q", po::value<int>(), "If this option is passed, the program outputs quality annotations with the specified threshold.")
+            ("quality,q", "If this option is passed, the program outputs quality annotations.")
+            ("svm,s", po::value<string>(), "Passes a file containing SVM parameters for quality checking.")
             ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
             ("num-channels,n", "Program writes the number of channels contained in a record.")
             ("version,v", "Prints version information for program.");
@@ -72,6 +74,7 @@ int main(int argc, const char** argv) {
             bool scaled = argument_map.count("unscaled") == 0;
             bool quality = argument_map.count("quality") > 0;
             bool num_channels = argument_map.count("num-channels") > 0;
+            bool features = argument_map.count("features") > 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
             // they can live with unpredictable behavior.
@@ -83,9 +86,11 @@ int main(int argc, const char** argv) {
             } else if (checksums) {
                 facade.write_checksums(cout, prefix);
             } else if (quality) {
-                unsigned int threshold = (unsigned)argument_map["quality"].as<int>();
-                unsigned int channel = (unsigned)argument_map["channel"].as<int>();
-                facade.write_quality(cout, prefix, channel, threshold);
+                unsigned int channel = (unsigned) argument_map["channel"].as<int>();
+                facade.write_quality(cout, prefix, channel);
+            } else if (features) {
+                unsigned int channel = (unsigned) argument_map["channel"].as<int>();
+                facade.write_features(cout, prefix, channel);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
             } else {

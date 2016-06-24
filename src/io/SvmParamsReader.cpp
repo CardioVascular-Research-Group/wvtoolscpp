@@ -2,4 +2,4 @@
 // Created by rliu14 on 6/24/16.
 //
 
-#include "QualityChecker.h"
+#include "SvmParamsReader.h"

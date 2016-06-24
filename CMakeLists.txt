@@ -3,7 +3,7 @@ project(wvtools)
 
 add_definitions(-std=c++11 -Wall -Wextra -pedantic -O3)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES wvtools.cpp)
 add_executable(wvtools ${SOURCE_FILES})
 
 add_subdirectory(test)

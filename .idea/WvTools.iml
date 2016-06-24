@@ -3,8 +3,8 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wvtools.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/WvReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/InfoReaderTest.cpp" isTestSource="false" />
