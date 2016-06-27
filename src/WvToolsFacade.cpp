@@ -14,6 +14,7 @@ using std::endl;
 #include "io/QrsOnsetReader.h"
 #include "util/FeatureCalculator.h"
 #include "util/SvmParams.h"
+#include "util/QualityChecker.h"
 
 using std::vector;
 
@@ -78,6 +79,28 @@ void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, c
         SvmParams svm_params(svm);
 
         FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
+
+        QualityChecker quality_checker(625, svm_params);
+
+        unsigned long current_index = 0;
+        vector<double> current_observations;
+        while (wv_reader.has_next()) {
+            if (current_index++ % info_reader.num_channels() == channel) {
+                current_observations.push_back(info_reader.gains[channel] * wv_reader.next());
+            } else {
+                wv_reader.next();
+            }
+            if (current_observations.size() == 625) {
+                quality_checker.read(feature_calculator.calculate_features(current_observations, current_index / info_reader.num_channels() - 624));
+                current_observations.clear();
+            }
+        }
+
+        if (headers) {
+            quality_checker.print_stats(os);
+        }
+
+        quality_checker.print_qualities(os);
 
     } catch (IOException &e) {
         cerr << e.get_message() << endl;
