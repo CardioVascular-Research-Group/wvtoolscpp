@@ -8,6 +8,9 @@ using std::endl;
 
 QualityChecker::QualityChecker(const unsigned long &constant_threshold, SvmParams &svm_params) : svm_params(svm_params) {
     this->constant_threshold = constant_threshold;
+    num_constant = 0;
+    num_good = 0;
+    num_bad = 0;
 }
 
 void QualityChecker::print_stats(std::ostream &os) {
