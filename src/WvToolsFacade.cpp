@@ -13,6 +13,7 @@ using std::endl;
 #include "util/ChecksumCalculator.h"
 #include "io/QrsOnsetReader.h"
 #include "util/FeatureCalculator.h"
+#include "io/SvmParamsReader.h"
 
 using std::vector;
 
@@ -70,7 +71,17 @@ void WvToolsFacade::write_checksums(std::ostream &os, const std::string &prefix)
 }
 
 void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, const unsigned int &channel, const std::string &svm, const bool &headers, const std::string &annotation_file) {
+    try {
+        InfoReader info_reader(prefix);
+        WvReader wv_reader(prefix);
+        QrsOnsetReader annotation_reader(annotation_file);
+        SvmParamsReader svm_params(svm);
 
+        FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
+
+    } catch (IOException &e) {
+        cerr << e.get_message() << endl;
+    }
 }
 
 
