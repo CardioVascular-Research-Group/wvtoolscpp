@@ -21,7 +21,10 @@ private:
     std::vector<double> sigmas;
     double bias;
 
+    double calculate_score(const std::vector<double>& features);
     static std::vector<double> tokenize(const std::string& values);
+
+    friend class QualityChecker;
 
     FRIEND_TEST(svm_params_reader_test, tokenize_test);
     FRIEND_TEST(svm_params_reader_test, read_file);

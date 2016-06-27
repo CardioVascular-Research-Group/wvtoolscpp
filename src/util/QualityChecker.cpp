@@ -25,8 +25,10 @@ void QualityChecker::read(const std::vector<double> &features) {
         num_constant++;
         quality.push_back(false);
     } else {
-        //
+
     }
 
 }
+
+
 

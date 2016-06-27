@@ -58,6 +58,15 @@ SvmParamsReader::SvmParamsReader(const std::string &filename) throw (IOException
 }
 
 
+double SvmParamsReader::calculate_score(const std::vector<double> &features) {
+    for (unsigned long c = 0; c < features.size(); c++) {
+
+    }
+
+    return 0;
+}
+
+
 std::vector<double> SvmParamsReader::tokenize(const std::string &values) {
     vector<double> result;
 
