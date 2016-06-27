@@ -21,7 +21,6 @@ using std::ifstream;
 using std::stod;
 using std::vector;
 
-#include <iostream>
 using std::cout;
 using std::endl;
 
