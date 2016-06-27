@@ -1,9 +1,10 @@
 WVTools, C++ Implementation
-v1.1 (updated Monday, June 20th 2016)
+v1.2 (updated Monday, June 27th 2016)
 Ran Liu (rliu14@jhu.edu)
 
 A C++ utility to read data from Phillips 16-bit little-endian waveform files.
 Allows for the generation of a PhysioNet header file.
+Can also produce quality annotations.
 
 Requirements: (to build)
 
@@ -17,17 +18,24 @@ Required options:
   -r [ --record ] arg   Record prefix of waveform data to read
 
 Allowed options:
-  -h [ --help ]         Prints program usage help
-  -u [ --unscaled ]     If this option is passed, the program prints unscaled
-                        data. Scaled is the default.
-  -p [ --physionet ]    If this option is passed, the program writes a
-                        physionet header instead of amplitudes
-  -c [ --checksums ]    If this option is passed, the program prints the
-                        checksums for each channel
-  -t [ --timestamps ]   If this option is passed, the timestamps column is
-                        included
-  -h [ --no-headers ]   If this option is passed, the headers row is omitted
-  -q [ --quality ] arg  If this option is passed, the program outputs quality
-                        annotations with the specified threshold.
-  -x [ --channel ] arg  Quality values are emitted for the specified channel
-                        (0-indexed).
+  -h [ --help ]          Prints program usage help
+  -u [ --unscaled ]      If this option is passed, the program prints unscaled
+                         data. Scaled is the default.
+  -p [ --physionet ]     If this option is passed, the program writes a
+                         physionet header instead of amplitudes
+  -c [ --checksums ]     If this option is passed, the program prints the
+                         checksums for each channel
+  -f [ --features ]      If this option is passed, the program emits the
+                         feature vectors for the specified channel
+  -t [ --timestamps ]    If this option is passed, the timestamps column is
+                         included
+  -h [ --no-headers ]    If this option is passed, the headers row is omitted
+  -q [ --quality ]       If this option is passed, the program outputs quality
+                         annotations.
+  -s [ --svm ] arg       Passes a file containing SVM parameters for quality
+                         checking.
+  -x [ --channel ] arg   Quality values are emitted for the specified channel
+                         (0-indexed).
+  -n [ --num-channels ]  Program writes the number of channels contained in a
+                         record.
+  -v [ --version ]       Prints version information for program.

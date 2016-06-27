@@ -21,15 +21,15 @@ using std::endl;
 using std::ifstream;
 
 InfoReader::InfoReader(const std::string &prefix) throw(IOException) {
-    regex expression("[0-9a-zA-Z\\-.]+ (\\d+) 1 ([0-9a-zA-Z]+) \"([0-9a-zA-Z]+)\" gain=(\\d.\\d+)");
+    static regex expression("[0-9a-zA-Z\\-.]+ (\\d+) 1 ([0-9a-zA-Z]+) \"([0-9a-zA-Z]+)\" gain=(\\d.\\d+)");
 
     string line;
     ifstream file(prefix + ".info");
+    cmatch matches;
 
     if (file.is_open()) {
         do {
             getline(file, line);
-            cmatch matches;
             if (regex_search(line.c_str(), matches, expression)) {
                 sample_rate = stoi(matches[1]);
                 units.push_back(matches[2]);

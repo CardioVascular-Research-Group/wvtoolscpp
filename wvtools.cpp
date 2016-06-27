@@ -87,10 +87,11 @@ int main(int argc, const char** argv) {
                 facade.write_checksums(cout, prefix);
             } else if (quality) {
                 unsigned int channel = (unsigned) argument_map["channel"].as<int>();
-                facade.write_quality(cout, prefix, channel);
+                string svm = argument_map["svm"].as<string>();
+                facade.write_quality(cout, prefix, channel, svm, headers);
             } else if (features) {
                 unsigned int channel = (unsigned) argument_map["channel"].as<int>();
-                facade.write_features(cout, prefix, channel);
+                facade.write_features(cout, prefix, channel, headers);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
             } else {
