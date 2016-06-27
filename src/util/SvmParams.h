@@ -7,14 +7,15 @@
 #include <string>
 #include <vector>
 #include <gtest/gtest.h>
-#include "IOException.h"
+#include "../io/IOException.h"
 
 /**
  * Reads SVM parameters.
  */
-class SvmParamsReader {
+class SvmParams {
 public:
-    SvmParamsReader(const std::string& filename) throw (IOException);
+    SvmParams(const std::vector<double>& coefficients, const std::vector<double>& means, const std::vector<double>& sigmas, const double& bias);
+    SvmParams(const std::string& filename) throw (IOException);
 private:
     std::vector<double> coefficients;
     std::vector<double> means;

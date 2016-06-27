@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "../src/io/SvmParamsReader.h"
+#include "../src/util/SvmParams.h"
 
 using std::cerr;
 using std::endl;
@@ -12,10 +12,10 @@ using std::vector;
 
 TEST(svm_params_reader_test, tokenize_test) {
 
-    vector<double> result = SvmParamsReader::tokenize("3 5 2.535");
+    vector<double> result = SvmParams::tokenize("3 -5 2.535");
     EXPECT_EQ(3, result.size());
     EXPECT_EQ(3, result[0]);
-    EXPECT_EQ(5, result[1]);
+    EXPECT_EQ(-5, result[1]);
     EXPECT_EQ(2.535, result[2]);
 
 }
@@ -23,7 +23,7 @@ TEST(svm_params_reader_test, tokenize_test) {
 TEST(svm_params_reader_test, read_file) {
 
     try {
-        SvmParamsReader reader("data/svm.txt");
+        SvmParams reader("data/svm.txt");
         EXPECT_EQ(reader.coefficients.size(), 9);
         EXPECT_EQ(reader.means.size(), 9);
         EXPECT_EQ(reader.sigmas.size(), 9);

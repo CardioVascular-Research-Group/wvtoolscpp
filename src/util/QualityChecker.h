@@ -5,16 +5,16 @@
 #pragma once
 
 
-#include "../io/SvmParamsReader.h"
+#include "SvmParams.h"
 
 class QualityChecker {
 public:
-    QualityChecker(const unsigned long& constant_threshold, SvmParamsReader& svm_params);
+    QualityChecker(const unsigned long& constant_threshold, SvmParams& svm_params);
     void print_stats(std::ostream& os);
     void print_qualities(std::ostream& os);
     void read(const std::vector<double>& features);
 private:
-    SvmParamsReader& svm_params;
+    SvmParams& svm_params;
 
     unsigned long constant_threshold;
 

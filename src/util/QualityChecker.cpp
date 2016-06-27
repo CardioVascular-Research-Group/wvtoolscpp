@@ -6,7 +6,7 @@
 
 using std::endl;
 
-QualityChecker::QualityChecker(const unsigned long &constant_threshold, SvmParamsReader &svm_params) : svm_params(svm_params) {
+QualityChecker::QualityChecker(const unsigned long &constant_threshold, SvmParams &svm_params) : svm_params(svm_params) {
 
 }
 
@@ -15,7 +15,7 @@ void QualityChecker::print_stats(std::ostream &os) {
 }
 
 void QualityChecker::print_qualities(std::ostream &os) {
-    for (auto &v : quality) {
+    for (bool v : quality) {
         os << v << endl;
     }
 }
@@ -25,7 +25,14 @@ void QualityChecker::read(const std::vector<double> &features) {
         num_constant++;
         quality.push_back(false);
     } else {
-
+        auto score = svm_params.calculate_score(features);
+        if (score < svm_params.bias) {
+            num_bad++;
+            quality.push_back(false);
+        } else {
+            num_good++;
+            quality.push_back(true);
+        }
     }
 
 }
