@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+using std::cout;
 using std::cerr;
 using std::endl;
 
@@ -10,6 +11,10 @@ using std::endl;
 #include "io/DataWriter.h"
 #include "io/PhysionetWriter.h"
 #include "util/ChecksumCalculator.h"
+#include "io/QrsOnsetReader.h"
+#include "util/FeatureCalculator.h"
+
+using std::vector;
 
 void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, const bool &scaled, const bool &headers,
                                const bool &timestamps) {
@@ -64,13 +69,43 @@ void WvToolsFacade::write_checksums(std::ostream &os, const std::string &prefix)
 
 }
 
-void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, const unsigned int &channel, const std::string &svm, const bool &headers) {
+void WvToolsFacade::write_quality(std::ostream &os, const std::string &prefix, const unsigned int &channel, const std::string &svm, const bool &headers, const std::string &annotation_file) {
 
 }
 
 
-void WvToolsFacade::write_features(std::ostream &os, const std::string &prefix, const unsigned int &channel, const bool &headers) {
+void WvToolsFacade::write_features(std::ostream &os, const std::string &prefix, const unsigned int &channel, const bool &headers, const std::string &annotation_file) {
+    try {
+        InfoReader info_reader(prefix);
+        WvReader wv_reader(prefix);
+        QrsOnsetReader annotation_reader(annotation_file);
+        FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
 
+        if (headers) {
+            os << "WindowMean\tWindowVar\tWindowStdev\tWindowRange\tNumConst\tQrsMean\tQrsStdev\tQrsRange" << endl;
+        }
+
+        unsigned long current_index = 0;
+        vector<double> current_observations;
+        while (wv_reader.has_next()) {
+            if (current_index++ % info_reader.num_channels() == channel) {
+                current_observations.push_back(info_reader.gains[channel] * wv_reader.next());
+            } else {
+                wv_reader.next();
+            }
+            if (current_observations.size() == 625) {
+                vector<double> features = feature_calculator.calculate_features(current_observations, current_index / info_reader.num_channels() - 624);
+                for (unsigned long c = 0; c < features.size() - 1; c++) {
+                    os << features[c] << "\t";
+                }
+                os << features[features.size() - 1] << endl;
+                current_observations.clear();
+            }
+        }
+
+    } catch (IOException &e) {
+        cerr << e.get_message() << endl;
+    }
 }
 
 

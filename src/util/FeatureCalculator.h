@@ -20,6 +20,7 @@ private:
     static double mode(const std::vector<double>& vector);
     static unsigned long count(const std::vector<double>& vector, const double& value);
 
+
     FRIEND_TEST(feature_calculator_test, test_interval_calculation);
     FRIEND_TEST(feature_calculator_test, calculate_mode);
 

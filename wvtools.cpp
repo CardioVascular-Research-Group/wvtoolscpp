@@ -16,8 +16,8 @@ using std::cerr;
 using std::string;
 
 void print_version_information(ostream& os) {
-    double version_number = 1.1;
-    os << "WvTools, version " << version_number << endl;
+    double version_number = 1.2;
+    os << "WvTools, version " << version_number << ", updated June 27th, 2016" << endl;
     os << "Author: Ran Liu, rliu14@jhu.edu" << endl;
 }
 
@@ -47,6 +47,7 @@ int main(int argc, const char** argv) {
             ("svm,s", po::value<string>(), "Passes a file containing SVM parameters for quality checking.")
             ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
             ("num-channels,n", "Program writes the number of channels contained in a record.")
+            ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations.")
             ("version,v", "Prints version information for program.");
 
     try {
@@ -88,10 +89,12 @@ int main(int argc, const char** argv) {
             } else if (quality) {
                 unsigned int channel = (unsigned) argument_map["channel"].as<int>();
                 string svm = argument_map["svm"].as<string>();
-                facade.write_quality(cout, prefix, channel, svm, headers);
+                string annotations = argument_map["annotations"].as<string>();
+                facade.write_quality(cout, prefix, channel, svm, headers, annotations);
             } else if (features) {
                 unsigned int channel = (unsigned) argument_map["channel"].as<int>();
-                facade.write_features(cout, prefix, channel, headers);
+                string annotations = argument_map["annotations"].as<string>();
+                facade.write_features(cout, prefix, channel, headers, annotations);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
             } else {

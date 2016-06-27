@@ -24,6 +24,10 @@ using boost::ref;
 using std::vector;
 using std::for_each;
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 FeatureCalculator::FeatureCalculator(const std::vector<unsigned long> &qrs_onsets, const unsigned long& total_length) : qrs_onsets(qrs_onsets) {
     push_multiple(qrs_intervals, qrs_onsets[1] - qrs_onsets[0], qrs_onsets[0]);
     for (unsigned long index = 1; index < qrs_onsets.size(); index++) {
@@ -47,13 +51,13 @@ std::vector<double> FeatureCalculator::calculate_features(const std::vector<doub
     }
 
     result.push_back(mean(accumulator));
-    result.push_back(variance(accumulator));
-    result.push_back(sqrt(variance(accumulator)));
+    result.push_back(variance(accumulator) * 625/624); // We want sample, not population variance. Normalize by n/n-1.
+    result.push_back(sqrt(variance(accumulator) * 625/624));
     result.push_back(max(accumulator) - min(accumulator));
     result.push_back(count(observations, mode(observations)));
     result.push_back(mean(qrs_accumulator));
-    result.push_back(sqrt(variance(qrs_accumulator)));
-    result.push_back(max(accumulator) - min(accumulator));
+    result.push_back(sqrt(variance(qrs_accumulator) * 625/624));
+    result.push_back(max(qrs_accumulator) - min(qrs_accumulator));
 
     return result;
 }
