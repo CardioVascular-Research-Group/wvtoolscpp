@@ -39,5 +39,3 @@ void QualityChecker::read(const std::vector<double> &features) {
     }
 }
 
-
-
