@@ -6,11 +6,15 @@ A C++ utility to read data from Phillips 16-bit little-endian waveform files.
 Allows for the generation of a PhysioNet header file.
 Can also produce quality annotations.
 
-Requirements: (to build)
+Build Requirements:
+CMake
 
-CMake 3.5 or newer
-Boost C++ library (Program_Options, Regex)
-GoogleTest library
+Dependencies:
+Boost C++ (Program_Options, Regex) (http://www.boost.org/)
+GoogleTest (https://github.com/google/googletest)
+JSON for Modern C++ (https://github.com/nlohmann/json)
+restclient-cpp (https://github.com/mrtazz/restclient-cpp)
+libcurl
 
 Usage: wvtools [options]
 
