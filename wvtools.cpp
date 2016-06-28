@@ -34,26 +34,31 @@ int main(int argc, const char** argv) {
     required.add_options()
             ("record,r", po::value<string>(), "Record prefix of waveform data to read");
 
-    po::options_description allowed("Allowed options");
-    allowed.add_options()
+    po::options_description modes("Operating modes");
+    modes.add_options()
+            ("version,v", "Prints version information for program.")
             ("help,h", "Prints program usage help")
             ("unscaled,u", "If this option is passed, the program prints unscaled data. Scaled is the default.")
             ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
             ("checksums,c", "If this option is passed, the program prints the checksums for each channel")
             ("features,f", "If this option is passed, the program emits the feature vectors for the specified channel")
-            ("timestamps,t", "If this option is passed, the timestamps column is included")
-            ("no-headers,h", "If this option is passed, the headers row is omitted")
             ("quality,q", "If this option is passed, the program outputs quality annotations.")
+            ("num-channels,n", "Program writes the number of channels contained in a record.")
+            ("tsdb", po::value<string>(), "Uploads data and quality annotations to TSDB.");
+
+
+    po::options_description allowed("Allowed options");
+    allowed.add_options()
+            ("timestamps,t", "If this option is passed, the timestamps column is included")
+            ("no-headers,o", "If this option is passed, the headers row is omitted")
             ("svm,s", po::value<string>(), "Passes a file containing SVM parameters for quality checking.")
             ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
-            ("num-channels,n", "Program writes the number of channels contained in a record.")
-            ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations.")
-            ("version,v", "Prints version information for program.");
+            ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations.");
 
     try {
         // Parse command line, store in argument map.
         po::options_description all("All options");
-        all.add(required).add(allowed);
+        all.add(required).add(modes).add(allowed);
 
         po::variables_map argument_map;
         po::store(po::parse_command_line(argc, argv, all), argument_map);
@@ -61,6 +66,7 @@ int main(int argc, const char** argv) {
 
         if (argument_map.count("help")) {
             print_help(required, cout);
+            print_help(modes, cout);
             print_help(allowed, cout);
         } else if (argument_map.count("version")) {
             print_version_information(cout);
@@ -105,6 +111,7 @@ int main(int argc, const char** argv) {
     } catch (exception& e) {
         cerr << e.what() << endl;
         print_help(required, cerr);
+        print_help(modes, cerr);
         print_help(allowed, cerr);
     }
 }

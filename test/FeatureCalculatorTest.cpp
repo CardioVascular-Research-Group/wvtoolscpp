@@ -34,8 +34,8 @@ TEST(feature_calculator_test, test_feature_calculation) {
     auto features = calculator.calculate_features(observations, 0);
 
     EXPECT_EQ(features[0], 3);
-    EXPECT_EQ(features[1], 2);
-    EXPECT_EQ(features[2], sqrt(2));
+    EXPECT_EQ(features[1], 2.0 * 625 / 624);
+    EXPECT_EQ(features[2], sqrt(2.0 * 625 / 624));
     EXPECT_EQ(features[3], 4);
     EXPECT_EQ(features[4], 1);
 }
