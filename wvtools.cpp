@@ -27,7 +27,6 @@ void print_help(const po::options_description& description, ostream& os) {
 
 int main(int argc, const char** argv) {
 
-
     po::options_description required("Required options");
     // At first, I thought this was a clever case of using function pointers to return a function from another function.
     // Then I realized it's an abomination of operator overloading.
@@ -44,13 +43,12 @@ int main(int argc, const char** argv) {
             ("features,f", "If this option is passed, the program emits the feature vectors for the specified channel")
             ("quality,q", "If this option is passed, the program outputs quality annotations.")
             ("num-channels,n", "Program writes the number of channels contained in a record.")
-            ("tsdb", po::value<string>(), "Uploads data and quality annotations to TSDB.");
+            ("tsdb,t", po::value<string>(), "Uploads data and quality annotations to TSDB.");
 
 
     po::options_description allowed("Allowed options");
     allowed.add_options()
-            ("timestamps,t", "If this option is passed, the timestamps column is included")
-            ("no-headers,o", "If this option is passed, the headers row is omitted")
+            ("no-headers", "If this option is passed, the headers row is omitted")
             ("svm,s", po::value<string>(), "Passes a file containing SVM parameters for quality checking.")
             ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
             ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations.");
@@ -74,7 +72,6 @@ int main(int argc, const char** argv) {
 
             string prefix = argument_map["record"].as<string>();
 
-            bool timestamps = argument_map.count("timestamps") > 0;
             bool headers = argument_map.count("no-headers") == 0;
             bool physionet = argument_map.count("physionet") > 0;
             bool checksums = argument_map.count("checksums") > 0;
@@ -82,6 +79,7 @@ int main(int argc, const char** argv) {
             bool quality = argument_map.count("quality") > 0;
             bool num_channels = argument_map.count("num-channels") > 0;
             bool features = argument_map.count("features") > 0;
+            bool tsdb = argument_map.count("tsdb") > 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
             // they can live with unpredictable behavior.
@@ -103,8 +101,14 @@ int main(int argc, const char** argv) {
                 facade.write_features(cout, prefix, channel, headers, annotations);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
+            } else  if (tsdb) {
+                unsigned int channel = (unsigned)argument_map["channel"].as<int>();
+                string tsdb_root = argument_map["tsdb"].as<string>();
+                string svm = argument_map["svm"].as<string>();
+                string annotations = argument_map["annotations"].as<string>();
+                facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root);
             } else {
-                facade.write_data(cout, prefix, scaled, headers, timestamps);
+                facade.write_data(cout, prefix, scaled, headers, false);
             }
         }
 

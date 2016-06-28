@@ -152,3 +152,16 @@ void WvToolsFacade::write_num_channels(std::ostream &os, const std::string &pref
     }
 }
 
+
+void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &channel, const std::string &svm,
+                                const std::string &qrs_file, const std::string &tsdb_root) {
+    try {
+
+    } catch (IOException & e) {
+        cerr << e.get_message() << endl;
+    }
+
+}
+
+
+
