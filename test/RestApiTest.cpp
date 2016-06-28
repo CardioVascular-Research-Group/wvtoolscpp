@@ -7,6 +7,8 @@
 #include "restclient-cpp/restclient.h"
 #include "json.hpp"
 
+using std::string;
+
 using nlohmann::json;
 
 using RestClient::Response;
@@ -23,7 +25,10 @@ TEST(rest_api_tests, test_version) {
 
     auto parsed_response = json::parse(response.body);
 
-    EXPECT_STRNE(parsed_response["host"], "null");
-    EXPECT_STRNE(parsed_response["short_revision"], "null");
+    string host = parsed_response["host"];
+
+    EXPECT_NE(host, string("null"));
+    EXPECT_TRUE(parsed_response.find("host") != parsed_response.end());
+
 
 }
