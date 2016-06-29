@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test/RestApiTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/WvReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/QrsOnsetReaderTest.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/TsdbUploaderTest.cpp" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

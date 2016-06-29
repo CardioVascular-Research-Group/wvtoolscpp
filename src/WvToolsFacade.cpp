@@ -23,8 +23,7 @@ using std::vector;
 
 // TODO refactor these methods. They could be more DRY.
 
-void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, const bool &scaled, const bool &headers,
-                               const bool &timestamps) {
+void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, const bool &scaled, const bool &headers, const bool &timestamps) {
     try {
         InfoReader info_reader(prefix);
         WvReader wv_reader(prefix);

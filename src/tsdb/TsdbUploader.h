@@ -10,6 +10,8 @@
 
 #include "json.hpp"
 
+#include <gtest/gtest.h>
+
 /**
  * Handles upload to TSDB via REST query.
  */
@@ -34,6 +36,9 @@ private:
 
     std::string api_root;
 
+    static nlohmann::json create_json_entry(const data_entry& entry);
+
+    FRIEND_TEST(tsdb_uploader_test, create_json_entry_test);
 };
 
 

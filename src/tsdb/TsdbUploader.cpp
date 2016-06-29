@@ -36,3 +36,16 @@ void TsdbUploader::flush() {
     entry_queue.clear();
 }
 
+
+nlohmann::json TsdbUploader::create_json_entry(const TsdbUploader::data_entry &entry) {
+    json result;
+
+    result["metric"] = entry.metric;
+    result["timestamp"] = entry.timestamp;
+    result["value"] = entry.value;
+    result["tags"] = json(entry.tags);
+
+    return result;
+}
+
+
