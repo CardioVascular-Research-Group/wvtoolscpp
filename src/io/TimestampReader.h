@@ -20,6 +20,8 @@ public:
 private:
     boost::posix_time::ptime start_time;
 
+    friend class WvToolsFacade;
+
     FRIEND_TEST(timestamp_test, timestamp_reader_test);
 };
 

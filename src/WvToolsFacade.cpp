@@ -15,8 +15,13 @@ using std::endl;
 #include "util/FeatureCalculator.h"
 #include "util/SvmParams.h"
 #include "util/QualityChecker.h"
+#include "tsdb/TsdbUploader.h"
+#include "util/TimestampCalculator.h"
+#include "io/TimestampReader.h"
 
 using std::vector;
+
+// TODO refactor these methods. They could be more DRY.
 
 void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, const bool &scaled, const bool &headers,
                                const bool &timestamps) {
@@ -158,6 +163,21 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
     try {
         InfoReader info_reader(prefix);
         WvReader wv_reader(prefix);
+        TimestampReader timestamp_reader(prefix);
+
+        QrsOnsetReader annotation_reader(qrs_file);
+        FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
+        TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
+
+        TsdbUploader tsdb_uploader(25, tsdb_root);
+
+        unsigned long current_index = 0;
+        vector<double> current_observations;
+
+        while (wv_reader.has_next()) {
+
+        }
+
 
     } catch (IOException & e) {
         cerr << e.get_message() << endl;
