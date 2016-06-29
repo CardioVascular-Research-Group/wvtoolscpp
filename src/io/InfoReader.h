@@ -26,6 +26,7 @@ private:
     friend class DataWriter;
     friend class PhysionetWriter;
     friend class WvToolsFacade;
+    friend class TsdbQueryConverter;
 
     FRIEND_TEST(info_reader_test, initial);
 };

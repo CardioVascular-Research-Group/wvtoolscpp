@@ -27,6 +27,7 @@ public:
 
     TsdbUploader(const unsigned long& data_points_per_query, const std::string& tsdb_api_root);
 
+    void add_data_point(const data_entry entry);
     void add_data_point(const std::string& metric, const unsigned long& timestamp, const double& value, const std::unordered_map<std::string, std::string>& tags);
     void add_annotation(const std::string& metric, const unsigned long& start_time, const unsigned long& end_time, const std::string& description, const std::unordered_map<std::string, std::string>& tags);
     void flush() throw (IOException);

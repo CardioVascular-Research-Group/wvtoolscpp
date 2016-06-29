@@ -19,7 +19,6 @@ boost::posix_time::ptime TimestampCalculator::calculate_offset(const unsigned lo
     return base_time + milliseconds(index * increment);
 }
 
-
 std::string TimestampCalculator::format_time(const unsigned long &index) {
     return format_time(calculate_offset(index));
 }
@@ -31,5 +30,12 @@ std::string TimestampCalculator::format_time(const boost::posix_time::ptime &tim
     stream << time;
 
     return stream.str();
+}
+
+
+long TimestampCalculator::calculate_timestamp(const boost::posix_time::ptime &time) {
+    static ptime epoch(date(1970, 1, 1));
+    auto difference = time - epoch;
+    return difference.total_milliseconds();
 }
 

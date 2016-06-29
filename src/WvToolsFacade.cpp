@@ -18,6 +18,7 @@ using std::endl;
 #include "tsdb/TsdbUploader.h"
 #include "util/TimestampCalculator.h"
 #include "io/TimestampReader.h"
+#include "tsdb/TsdbQueryConverter.h"
 
 using std::vector;
 
@@ -169,20 +170,41 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
         TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
 
         TsdbUploader tsdb_uploader(25, tsdb_root);
+        TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
 
         unsigned long current_index = 0;
         vector<double> current_observations;
 
         while (wv_reader.has_next()) {
+            auto current_channel = current_index++ % info_reader.num_channels();
 
+            auto current_raw_observation = wv_reader.next();
+            auto current_scaled_observation = info_reader.gains[current_channel] * current_raw_observation;
+
+            if (current_channel == channel) current_observations.push_back(current_scaled_observation);
+
+            tsdb_uploader.add_data_point(query_converter.convert_scaled_data(current_scaled_observation));
+
+            if (current_observations.size() == 625) {
+                vector<double> features = feature_calculator.calculate_features(current_observations, current_index / info_reader.num_channels() - 624);
+                current_observations.clear();
+            }
+
+            tsdb_uploader.flush(); // Flush any queued data remaining.
         }
 
-
-    } catch (IOException & e) {
+    } catch (IOException &e) {
         cerr << e.get_message() << endl;
     }
 
 }
 
+/**
+ * Only upload annotations.
+ */
+void WvToolsFacade::tsdb_annotations_upload(const std::string &prefix, const unsigned int &channel,
+                                            const std::string &svm, const std::string &qrs_file,
+                                            const std::string &tsdb_root) {
 
+}
 

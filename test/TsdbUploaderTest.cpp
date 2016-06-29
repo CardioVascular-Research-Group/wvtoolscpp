@@ -62,5 +62,4 @@ TEST(tsdb_uploader_test, flush_test) {
     uploader.add_data_point("ECG", 1234, 7.2, {{"uid", "asdf"}});
     uploader.add_data_point("ECG", 12, 2.2, {{"uid", "wer"}});
 
-
 }

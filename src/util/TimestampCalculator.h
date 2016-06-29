@@ -14,6 +14,7 @@ public:
     std::string format_time(const boost::posix_time::ptime& time);
     std::string format_time(const unsigned long& index);
     boost::posix_time::ptime calculate_offset(const unsigned long& index);
+    long calculate_timestamp(const boost::posix_time::ptime& time);
 private:
     long increment;
     std::locale current_locale;

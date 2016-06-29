@@ -17,6 +17,11 @@ TsdbUploader::TsdbUploader(const unsigned long &data_points_per_query, const std
 }
 
 
+void TsdbUploader::add_data_point(const TsdbUploader::data_entry entry) {
+    entry_queue.push_back(entry);
+    if (entry_queue.size() == max_queue_length) flush();
+}
+
 void TsdbUploader::add_data_point(const std::string &metric, const unsigned long &timestamp, const double &value,
                                   const std::unordered_map<std::string, std::string> &tags) {
     data_entry data;
@@ -24,9 +29,7 @@ void TsdbUploader::add_data_point(const std::string &metric, const unsigned long
     data.timestamp = timestamp;
     data.value = value;
     data.tags = tags;
-    entry_queue.push_back(data);
-
-    if (entry_queue.size() == max_queue_length) flush();
+    add_data_point(data);
 }
 
 void TsdbUploader::add_annotation(const std::string &metric, const unsigned long &start_time,
