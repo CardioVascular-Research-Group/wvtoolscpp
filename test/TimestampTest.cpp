@@ -6,6 +6,7 @@
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time.hpp>
 #include "../src/io/TimestampReader.h"
 
 using namespace boost::gregorian;
@@ -14,27 +15,45 @@ using namespace boost::posix_time;
 using std::cout;
 using std::endl;
 using std::cerr;
+using std::locale;
+using std::stringstream;
 
-TEST(timestamp_test, basic_arithmetic_test) {
+TEST(timestamp_test, format_test) {
 
     ptime time(date(2002, Jan, 10), hours(13) + minutes(5) + seconds(2) + milliseconds(23));
 
-    cout << endl;
-    cout << time << endl;
-    cout << time + hours(2) << endl;
+    time_facet* t = new time_facet("%A"); // Not a memory leak; the locale takes ownership. The more you know.
+    locale loc(locale("en_US.utf8"), t);
 
-    cout << "timestamp " << (time - ptime(date(1970, 1, 1))).total_seconds() << endl;
+    stringstream stream;
+    stream.imbue(loc);
+    stream << time;
+
+    EXPECT_EQ(stream.str(), "Thursday");
+
 }
 
 TEST(timestamp_test, timestamp_reader_test) {
 
     try {
         TimestampReader reader("data/test");
+        EXPECT_EQ(reader.start_time.date().year(), 2014);
+        EXPECT_EQ(reader.start_time.date().day().as_number(), 24);
+        EXPECT_EQ(reader.start_time.date().month().as_number(), 12);
+
+        EXPECT_EQ(reader.start_time.time_of_day().hours(), 18);
+        EXPECT_EQ(reader.start_time.time_of_day().minutes(), 42);
+        EXPECT_EQ(reader.start_time.time_of_day().seconds(), 34);
+
         cout << reader.start_time << endl;
 
     } catch (IOException& e) {
         cerr << e.get_message() << endl;
         FAIL();
     }
+
+}
+
+TEST(timestamp_test, timestamp_calculator_test) {
 
 }
