@@ -56,8 +56,6 @@ TEST(timestamp_test, timestamp_reader_test) {
 }
 
 TEST(timestamp_test, timestamp_calculator_test) {
-    TimestampCalculator calculator("%Y-%m-%d %H:%M:%s:", ptime(date(2016, Feb, 1)), 125);
-
-    cout << calculator.format_time(0) << endl;
-
+    TimestampCalculator calculator("%Y-%m-%d %H:%M:%s", ptime(date(2016, Feb, 1)), 125);
+    EXPECT_EQ(calculator.format_time(0), "2016-02-01 00:00:00.000000");
 }

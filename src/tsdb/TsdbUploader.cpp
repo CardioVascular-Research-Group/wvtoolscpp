@@ -4,16 +4,24 @@
 
 #include "TsdbUploader.h"
 
+using nlohmann::json;
 
 TsdbUploader::TsdbUploader(const unsigned long &data_points_per_query, const std::string &tsdb_api_root) {
-    this->data_points_per_entry = data_points_per_query;
+    this->max_queue_length = data_points_per_query;
     this->api_root = tsdb_api_root;
 }
 
 
 void TsdbUploader::add_data_point(const std::string &metric, const unsigned long &timestamp, const double &value,
                                   const std::unordered_map<std::string, std::string> &tags) {
+    data_entry data;
+    data.metric = metric;
+    data.timestamp = timestamp;
+    data.value = value;
+    data.tags = tags;
+    entry_queue.push_back(data);
 
+    if (entry_queue.size() == max_queue_length) flush();
 }
 
 void TsdbUploader::add_annotation(const std::string &metric, const unsigned long &start_time,
@@ -23,6 +31,8 @@ void TsdbUploader::add_annotation(const std::string &metric, const unsigned long
 }
 
 void TsdbUploader::flush() {
+    json entry;
 
+    entry_queue.clear();
 }
 

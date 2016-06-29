@@ -6,12 +6,22 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
+
+#include "json.hpp"
 
 /**
  * Handles upload to TSDB via REST query.
  */
 class TsdbUploader {
 public:
+    struct data_entry {
+        std::string metric;
+        unsigned long timestamp;
+        double value;
+        std::unordered_map<std::string, std::string> tags;
+    };
+
     TsdbUploader(const unsigned long& data_points_per_query, const std::string& tsdb_api_root);
 
     void add_data_point(const std::string& metric, const unsigned long& timestamp, const double& value, const std::unordered_map<std::string, std::string>& tags);
@@ -19,8 +29,11 @@ public:
     void flush();
 
 private:
-    unsigned long data_points_per_entry;
+    unsigned long max_queue_length;
+    std::vector<data_entry> entry_queue;
+
     std::string api_root;
+
 };
 
 
