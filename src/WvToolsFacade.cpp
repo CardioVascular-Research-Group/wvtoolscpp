@@ -169,7 +169,7 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
         FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
         TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
 
-        TsdbUploader tsdb_uploader(25, tsdb_root);
+        TsdbUploader tsdb_uploader(300, tsdb_root);
         TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
 
         unsigned long current_index = 0;
@@ -190,8 +190,9 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
                 current_observations.clear();
             }
 
-            tsdb_uploader.flush(); // Flush any queued data remaining.
         }
+        tsdb_uploader.flush(); // Flush any queued data remaining.
+
 
     } catch (IOException &e) {
         cerr << e.get_message() << endl;

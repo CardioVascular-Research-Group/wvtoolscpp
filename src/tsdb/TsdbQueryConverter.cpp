@@ -4,13 +4,18 @@
 
 #include "TsdbQueryConverter.h"
 
+#include <boost/algorithm/string.hpp>
+
 using nlohmann::json;
 
 TsdbQueryConverter::TsdbQueryConverter(const std::string& prefix, InfoReader &info_reader, TimestampCalculator& timestamp_calculator) : info_reader(info_reader), timestamp_calculator(timestamp_calculator) {
     this->prefix = prefix;
     current_index = 0;
-}
 
+    for (std::string& s : info_reader.channel_labels) {
+        metrics.push_back(boost::algorithm::to_lower_copy(s));
+    }
+}
 
 TsdbUploader::data_entry TsdbQueryConverter::convert_scaled_data(const double &scaled_data_point) {
     auto current_channel = current_index % info_reader.num_channels();

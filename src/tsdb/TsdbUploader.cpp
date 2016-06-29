@@ -19,7 +19,9 @@ TsdbUploader::TsdbUploader(const unsigned long &data_points_per_query, const std
 
 void TsdbUploader::add_data_point(const TsdbUploader::data_entry entry) {
     entry_queue.push_back(entry);
-    if (entry_queue.size() == max_queue_length) flush();
+    if (entry_queue.size() >= max_queue_length) {
+        flush();
+    }
 }
 
 void TsdbUploader::add_data_point(const std::string &metric, const unsigned long &timestamp, const double &value,
@@ -45,7 +47,9 @@ void TsdbUploader::flush() throw (IOException) {
             json_entries.push_back(create_json_entry(e));
         }
 
-        RestClient::Response response = RestClient::post(api_root + "/api/put", "text/json", json(json_entries).dump());
+        json query(json_entries);
+
+        RestClient::Response response = RestClient::post(api_root + "/api/put", "application/json", query.dump(1));
         if (response.code != 204) {
             throw IOException(response.body);
         }
