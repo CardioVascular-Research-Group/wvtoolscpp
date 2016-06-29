@@ -10,8 +10,12 @@
 
 class TimestampCalculator {
 public:
-    TimestampCalculator(const std::string& format, const boost::posix_time::ptime& base_time);
+    TimestampCalculator(const std::string& format, const boost::posix_time::ptime& base_time, const double& sample_rate);
+    std::string format_time(const boost::posix_time::ptime& time);
+    std::string format_time(const unsigned long& index);
+    boost::posix_time::ptime calculate_offset(const unsigned long& index);
 private:
+    long increment;
     std::locale current_locale;
     boost::posix_time::ptime base_time;
 };

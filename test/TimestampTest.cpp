@@ -8,6 +8,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time.hpp>
 #include "../src/io/TimestampReader.h"
+#include "../src/util/TimestampCalculator.h"
 
 using namespace boost::gregorian;
 using namespace boost::posix_time;
@@ -55,5 +56,8 @@ TEST(timestamp_test, timestamp_reader_test) {
 }
 
 TEST(timestamp_test, timestamp_calculator_test) {
+    TimestampCalculator calculator("%Y-%m-%d %H:%M:%s:", ptime(date(2016, Feb, 1)), 125);
+
+    cout << calculator.format_time(0) << endl;
 
 }
