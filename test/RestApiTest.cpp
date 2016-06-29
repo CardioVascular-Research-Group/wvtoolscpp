@@ -32,3 +32,12 @@ TEST(rest_api_tests, test_version) {
 
 
 }
+
+TEST(rest_api_tests, multiple_query) {
+
+    for (unsigned int c = 0; c < 15; c++) {
+        Response response = RestClient::get("https://www.google.com");
+        EXPECT_EQ(200, response.code);
+    }
+
+}

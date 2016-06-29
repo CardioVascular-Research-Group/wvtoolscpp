@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "json.hpp"
+#include "../io/IOException.h"
 
 #include <gtest/gtest.h>
 
@@ -28,7 +29,7 @@ public:
 
     void add_data_point(const std::string& metric, const unsigned long& timestamp, const double& value, const std::unordered_map<std::string, std::string>& tags);
     void add_annotation(const std::string& metric, const unsigned long& start_time, const unsigned long& end_time, const std::string& description, const std::unordered_map<std::string, std::string>& tags);
-    void flush();
+    void flush() throw (IOException);
 
 private:
     unsigned long max_queue_length;
