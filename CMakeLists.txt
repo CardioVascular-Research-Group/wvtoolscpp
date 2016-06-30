@@ -12,3 +12,5 @@ add_subdirectory(src)
 include_directories(src)
 
 target_link_libraries(wvtools wvtools_lib)
+
+install(TARGETS wvtools DESTINATION bin)

@@ -6,6 +6,8 @@
 #include "TsdbUploader.h"
 
 using nlohmann::json;
+
+using std::string;
 using std::vector;
 
 using std::cout;
@@ -36,9 +38,45 @@ void TsdbUploader::add_data_point(const std::string &metric, const unsigned long
 
 void TsdbUploader::add_annotation(const std::string &metric, const unsigned long &start_time,
                                   const unsigned long &end_time, const std::string &description,
-                                  const std::unordered_map<std::string, std::string> &tags) {
-    // TODO
+                                  const std::unordered_map<std::string, std::string> &tags) throw (IOException) {
+    // First, we need to query and find the TSUID of the series.
+    string tsuid = query_tsuid(metric, start_time, tags);
+
+    json query = {
+            {"startTime", start_time},
+            {"endTime", end_time},
+            {"tsuid", tsuid},
+            {"description", description}
+    };
+
+    RestClient::Response response = RestClient::post(api_root + "/api/annotation", "application/json", query.dump());
+    if (response.code != 204) {
+        throw IOException(response.body);
+    }
 }
+
+
+std::string TsdbUploader::query_tsuid(const std::string &metric, const unsigned long &start_time, const std::unordered_map<std::string, std::string> &tags) {
+
+    vector<json> queries;
+    queries.push_back({{"aggregator", "avg"}, {"metric", metric}, {"tags", tags}});
+
+    json query = {
+            {"metric", metric},
+            {"start", start_time},
+            {"end", start_time + 8},
+            {"queries", queries},
+            {"msResolution", true},
+            {"showTSUIDs", true}
+    };
+
+    RestClient::Response response = RestClient::post(api_root + "/api/query", "application/json", query.dump());
+    auto parsed_response = json::parse(response.body);
+    json query_response = parsed_response[0];
+
+    return query_response["tsuids"][0];
+}
+
 
 void TsdbUploader::flush() throw (IOException) {
     if (entry_queue.size() > 0) {
@@ -49,7 +87,7 @@ void TsdbUploader::flush() throw (IOException) {
 
         json query(json_entries);
 
-        RestClient::Response response = RestClient::post(api_root + "/api/put", "application/json", query.dump(1));
+        RestClient::Response response = RestClient::post(api_root + "/api/put", "application/json", query.dump());
         if (response.code != 204) {
             throw IOException(response.body);
         }

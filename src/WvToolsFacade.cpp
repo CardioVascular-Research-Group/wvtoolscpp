@@ -164,10 +164,12 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
         InfoReader info_reader(prefix);
         WvReader wv_reader(prefix);
         TimestampReader timestamp_reader(prefix);
+        SvmParams svm_params(svm);
 
         QrsOnsetReader annotation_reader(qrs_file);
         FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
         TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
+        QualityChecker quality_checker(625, svm_params);
 
         TsdbUploader tsdb_uploader(300, tsdb_root);
         TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
@@ -187,9 +189,10 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
 
             if (current_observations.size() == 625) {
                 vector<double> features = feature_calculator.calculate_features(current_observations, current_index / info_reader.num_channels() - 624);
+                quality_checker.read(features);
+
                 current_observations.clear();
             }
-
         }
         tsdb_uploader.flush(); // Flush any queued data remaining.
 

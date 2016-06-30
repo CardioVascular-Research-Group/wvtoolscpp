@@ -52,7 +52,7 @@ TEST(tsdb_uploader_test, json_array_test) {
 
 }
 
-TEST(tsdb_uploader_test, flush_test) {
+/*TEST(tsdb_uploader_test, flush_test) {
 
     TsdbUploader uploader(2, "asfd");
 
@@ -62,4 +62,13 @@ TEST(tsdb_uploader_test, flush_test) {
     uploader.add_data_point("ECG", 1234, 7.2, {{"uid", "asdf"}});
     uploader.add_data_point("ECG", 12, 2.2, {{"uid", "wer"}});
 
-}
+}*/
+
+/*
+TEST(tsdb_uploader_test, query_tsuid_test) {
+
+    TsdbUploader uploader(25, "http://localhost:3001");
+    auto result = uploader.query_tsuid("ecg", 1419446554000, {{"subject_id", "2224BN1416911131-20141224-184234"}});
+    cout << result << endl;
+
+}*/

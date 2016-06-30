@@ -23,6 +23,8 @@ private:
     unsigned long num_bad;
 
     std::vector<bool> quality;
+
+    friend class WvToolsFacade;
 };
 
 
