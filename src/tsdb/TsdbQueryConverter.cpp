@@ -7,14 +7,25 @@
 #include <boost/algorithm/string.hpp>
 
 using nlohmann::json;
+
 using std::vector;
+using std::string;
+using std::to_string;
 
 TsdbQueryConverter::TsdbQueryConverter(const std::string& prefix, InfoReader &info_reader, TimestampCalculator& timestamp_calculator) : info_reader(info_reader), timestamp_calculator(timestamp_calculator) {
     this->prefix = prefix;
     current_index = 0;
 
     for (std::string& s : info_reader.channel_labels) {
-        metrics.push_back(boost::algorithm::to_lower_copy(s));
+        string current_metric_label = boost::algorithm::to_lower_copy(s);
+        unsigned int suffix = 0;
+
+        if (contains(metrics, current_metric_label)) {
+            while (contains(metrics, current_metric_label + "_" + to_string(suffix))) current_index++;
+            metrics.push_back(current_metric_label + "_" + to_string(suffix));
+        } else {
+            metrics.push_back(current_metric_label);
+        }
     }
 }
 
@@ -64,5 +75,13 @@ TsdbUploader::annotation_entry TsdbQueryConverter::generate_annotation_entry(con
     entry.end_time = (unsigned long)timestamp_calculator.calculate_timestamp(timestamp_calculator.calculate_offset(end_index));
 
     return entry;
+}
+
+
+bool TsdbQueryConverter::contains(std::vector<std::string> &v, std::string value) {
+    for (auto &s : v) {
+        if (value == s) return true;
+    }
+    return false;
 }
 

@@ -27,6 +27,8 @@ private:
 
     TsdbUploader::annotation_entry generate_annotation_entry(const unsigned long& start_index, const unsigned long& end_index);
 
+    bool contains(std::vector<std::string>& v, std::string value);
+
     friend class WvToolsFacade;
 };
 
