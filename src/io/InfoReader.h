@@ -18,6 +18,8 @@ public:
     InfoReader(const std::string& prefix) throw(IOException);
     unsigned long num_channels();
 private:
+    InfoReader();
+
     int sample_rate;
     std::vector<std::string> channel_labels;
     std::vector<std::string> units;
@@ -29,4 +31,5 @@ private:
     friend class TsdbQueryConverter;
 
     FRIEND_TEST(info_reader_test, initial);
+    FRIEND_TEST(tsdb_query_converter_test, test_annotation_generation);
 };

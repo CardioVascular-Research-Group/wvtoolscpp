@@ -20,6 +20,12 @@ using std::endl;
 #include <fstream>
 using std::ifstream;
 
+
+InfoReader::InfoReader() {
+
+}
+
+
 InfoReader::InfoReader(const std::string &prefix) throw(IOException) {
     static regex expression("[0-9a-zA-Z\\-.]+ (\\d+) 1 ([0-9a-zA-Z]+) \"([0-9a-zA-Z]+)\" gain=(\\d.\\d+)");
 

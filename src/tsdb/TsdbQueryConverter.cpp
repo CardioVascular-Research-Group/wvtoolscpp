@@ -61,6 +61,7 @@ TsdbUploader::annotation_entry TsdbQueryConverter::generate_annotation_entry(con
     TsdbUploader::annotation_entry entry;
     entry.description = "good";
     entry.start_time = (unsigned long)timestamp_calculator.calculate_timestamp(timestamp_calculator.calculate_offset(start_index));
+    entry.end_time = (unsigned long)timestamp_calculator.calculate_timestamp(timestamp_calculator.calculate_offset(end_index));
 
     return entry;
 }

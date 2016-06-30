@@ -56,6 +56,8 @@ void TsdbUploader::add_annotation(const std::string &metric, const unsigned long
             {"description", description}
     };
 
+    cout << query.dump(4) << endl;
+
     RestClient::Response response = RestClient::post(api_root + "/api/annotation", "application/json", query.dump());
     if (response.code != 200) {
         throw IOException(response.body);

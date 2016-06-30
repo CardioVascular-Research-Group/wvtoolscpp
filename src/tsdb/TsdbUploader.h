@@ -27,8 +27,8 @@ public:
 
     struct annotation_entry {
         std::string tsuid;
-        unsigned long start_time;
-        unsigned long end_time;
+        long start_time;
+        long end_time;
         std::string description;
     };
 
