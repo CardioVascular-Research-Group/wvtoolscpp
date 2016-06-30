@@ -190,12 +190,14 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
             if (current_observations.size() == 625) {
                 vector<double> features = feature_calculator.calculate_features(current_observations, current_index / info_reader.num_channels() - 624);
                 quality_checker.read(features);
-
                 current_observations.clear();
             }
         }
         tsdb_uploader.flush(); // Flush any queued data remaining.
-
+        auto annotations = query_converter.convert_quality_annotations(quality_checker.quality);
+        for (auto &a : annotations) {
+            tsdb_uploader.add_annotation(query_converter.metrics[channel], {{"subject_id", prefix}}, a);
+        }
 
     } catch (IOException &e) {
         cerr << e.get_message() << endl;

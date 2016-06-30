@@ -36,6 +36,13 @@ void TsdbUploader::add_data_point(const std::string &metric, const unsigned long
     add_data_point(data);
 }
 
+
+void TsdbUploader::add_annotation(const std::string &metric, const std::unordered_map<std::string, std::string> &tags,
+                                  const TsdbUploader::annotation_entry &entry) {
+    add_annotation(metric, entry.start_time, entry.end_time, entry.description, tags);
+}
+
+
 void TsdbUploader::add_annotation(const std::string &metric, const unsigned long &start_time,
                                   const unsigned long &end_time, const std::string &description,
                                   const std::unordered_map<std::string, std::string> &tags) throw (IOException) {
