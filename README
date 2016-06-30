@@ -1,5 +1,5 @@
 WVTools, C++ Implementation
-v1.2 (updated Monday, June 27th 2016)
+v1.3 (updated Thursday, June 30th 2016)
 Ran Liu (rliu14@jhu.edu)
 
 A C++ utility to read data from Phillips 16-bit little-endian waveform files.
@@ -21,7 +21,8 @@ Usage: wvtools [options]
 Required options:
   -r [ --record ] arg   Record prefix of waveform data to read
 
-Allowed options:
+Operating modes:
+  -v [ --version ]       Prints version information for program.
   -h [ --help ]          Prints program usage help
   -u [ --unscaled ]      If this option is passed, the program prints unscaled
                          data. Scaled is the default.
@@ -31,15 +32,17 @@ Allowed options:
                          checksums for each channel
   -f [ --features ]      If this option is passed, the program emits the
                          feature vectors for the specified channel
-  -t [ --timestamps ]    If this option is passed, the timestamps column is
-                         included
-  -h [ --no-headers ]    If this option is passed, the headers row is omitted
   -q [ --quality ]       If this option is passed, the program outputs quality
                          annotations.
-  -s [ --svm ] arg       Passes a file containing SVM parameters for quality
-                         checking.
-  -x [ --channel ] arg   Quality values are emitted for the specified channel
-                         (0-indexed).
   -n [ --num-channels ]  Program writes the number of channels contained in a
                          record.
-  -v [ --version ]       Prints version information for program.
+  -t [ --tsdb ] arg      Uploads data and quality annotations to TSDB.
+  --tsdb-annotations arg Uploads only quality annotations to TSDB.
+
+Allowed options:
+  --no-headers             If this option is passed, the headers row is omitted
+  -s [ --svm ] arg         Passes a file containing SVM parameters for quality
+                           checking.
+  -x [ --channel ] arg     Quality values are emitted for the specified channel
+                           (0-indexed).
+  -a [ --annotations ] arg Filename containing QRS onset annotations.

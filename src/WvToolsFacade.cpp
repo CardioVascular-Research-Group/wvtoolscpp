@@ -208,9 +208,46 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
 /**
  * Only upload annotations.
  */
-void WvToolsFacade::tsdb_annotations_upload(const std::string &prefix, const unsigned int &channel,
-                                            const std::string &svm, const std::string &qrs_file,
-                                            const std::string &tsdb_root) {
+void WvToolsFacade::tsdb_annotations_upload(const std::string &prefix, const unsigned int &channel, const std::string &svm, const std::string &qrs_file, const std::string &tsdb_root) {
+    try {
+        InfoReader info_reader(prefix);
+        WvReader wv_reader(prefix);
+        TimestampReader timestamp_reader(prefix);
+        SvmParams svm_params(svm);
 
+        QrsOnsetReader annotation_reader(qrs_file);
+        FeatureCalculator feature_calculator(annotation_reader.get_onsets(), wv_reader.num_entries() / info_reader.num_channels());
+        TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
+        QualityChecker quality_checker(625, svm_params);
+
+        TsdbUploader tsdb_uploader(300, tsdb_root);
+        TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
+
+        unsigned long current_index = 0;
+        vector<double> current_observations;
+
+        while (wv_reader.has_next()) {
+            auto current_channel = current_index++ % info_reader.num_channels();
+
+            auto current_raw_observation = wv_reader.next();
+            auto current_scaled_observation = info_reader.gains[current_channel] * current_raw_observation;
+
+            if (current_channel == channel) current_observations.push_back(current_scaled_observation);
+
+
+            if (current_observations.size() == 625) {
+                vector<double> features = feature_calculator.calculate_features(current_observations, current_index / info_reader.num_channels() - 624);
+                quality_checker.read(features);
+                current_observations.clear();
+            }
+        }
+        auto annotations = query_converter.convert_quality_annotations(quality_checker.quality);
+        for (auto &a : annotations) {
+            tsdb_uploader.add_annotation(query_converter.metrics[channel], {{"subject_id", prefix}}, a);
+        }
+
+    } catch (IOException &e) {
+        cerr << e.get_message() << endl;
+    }
 }
 

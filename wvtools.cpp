@@ -43,7 +43,8 @@ int main(int argc, const char** argv) {
             ("features,f", "If this option is passed, the program emits the feature vectors for the specified channel")
             ("quality,q", "If this option is passed, the program outputs quality annotations.")
             ("num-channels,n", "Program writes the number of channels contained in a record.")
-            ("tsdb,t", po::value<string>(), "Uploads data and quality annotations to TSDB.");
+            ("tsdb,t", po::value<string>(), "Uploads data and quality annotations to TSDB.")
+            ("tsdb-annotations", po::value<string>(), "Uploads only quality annotations to TSDB.");
 
 
     po::options_description allowed("Allowed options");
@@ -80,6 +81,7 @@ int main(int argc, const char** argv) {
             bool num_channels = argument_map.count("num-channels") > 0;
             bool features = argument_map.count("features") > 0;
             bool tsdb = argument_map.count("tsdb") > 0;
+            bool tsdb_annotations = argument_map.count("tsdb-annotations") > 0;
 
             // Could do some more input validation, but if the user wants to put in contradictory parameters,
             // they can live with unpredictable behavior.
@@ -101,12 +103,18 @@ int main(int argc, const char** argv) {
                 facade.write_features(cout, prefix, channel, headers, annotations);
             } else if (num_channels) {
                 facade.write_num_channels(cout, prefix);
-            } else  if (tsdb) {
+            } else if (tsdb) {
                 unsigned int channel = (unsigned)argument_map["channel"].as<int>();
                 string tsdb_root = argument_map["tsdb"].as<string>();
                 string svm = argument_map["svm"].as<string>();
                 string annotations = argument_map["annotations"].as<string>();
                 facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root);
+            } else if (tsdb_annotations) {
+                unsigned int channel = (unsigned)argument_map["channel"].as<int>();
+                string tsdb_root = argument_map["tsdb-annotations"].as<string>();
+                string svm = argument_map["svm"].as<string>();
+                string annotations = argument_map["annotations"].as<string>();
+                facade.tsdb_annotations_upload(prefix, channel, svm, annotations, tsdb_root);
             } else {
                 facade.write_data(cout, prefix, scaled, headers, false);
             }
