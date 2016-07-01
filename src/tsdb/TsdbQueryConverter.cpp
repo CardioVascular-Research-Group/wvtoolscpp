@@ -21,8 +21,8 @@ TsdbQueryConverter::TsdbQueryConverter(const std::string& prefix, InfoReader &in
         unsigned int suffix = 0;
 
         if (contains(metrics, current_metric_label)) {
-            while (contains(metrics, current_metric_label + "_" + to_string(suffix))) suffix++;
-            metrics.push_back(current_metric_label + "_" + to_string(suffix));
+            while (contains(metrics, current_metric_label + to_string(suffix))) suffix++;
+            metrics.push_back(current_metric_label + to_string(suffix));
         } else {
             metrics.push_back(current_metric_label);
         }
