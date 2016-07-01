@@ -33,4 +33,6 @@ private:
     FRIEND_TEST(info_reader_test, initial);
     FRIEND_TEST(tsdb_query_converter_test, test_annotation_generation);
     FRIEND_TEST(tsdb_query_converter_test, test_metric_nomenclature);
+    FRIEND_TEST(tsdb_query_converter_test, test_metric_nomenclature_on_file_read);
+
 };

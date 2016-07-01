@@ -32,6 +32,8 @@ private:
     friend class WvToolsFacade;
 
     FRIEND_TEST(tsdb_query_converter_test, test_metric_nomenclature);
+    FRIEND_TEST(tsdb_query_converter_test, test_metric_nomenclature_on_file_read);
+
 };
 
 

@@ -11,6 +11,7 @@ using namespace boost::posix_time;
 
 using std::cout;
 using std::endl;
+using std::cerr;
 
 TEST(tsdb_query_converter_test, test_annotation_generation) {
 
@@ -50,4 +51,22 @@ TEST(tsdb_query_converter_test, test_metric_nomenclature) {
     for (auto &s : converter.metrics) {
         cout << s << endl;
     }
+}
+
+TEST(tsdb_query_converter_test, test_metric_nomenclature_on_file_read) {
+    try {
+        InfoReader info_reader("data/study");
+        TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", second_clock::universal_time(), info_reader.sample_rate);
+        TsdbQueryConverter converter("awooga", info_reader, timestamp_calculator);
+
+
+        EXPECT_EQ(converter.metrics.size(), 3);
+        EXPECT_EQ(converter.metrics[0], "ecg");
+        EXPECT_EQ(converter.metrics[1], "ecg0");
+        EXPECT_EQ(converter.metrics[2], "resp");
+    } catch (IOException& e) {
+        cerr << e.get_message() << endl;
+        FAIL();
+    }
+
 }
