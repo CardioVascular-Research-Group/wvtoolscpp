@@ -38,3 +38,18 @@ TEST(tsdb_query_converter_test, test_annotation_generation) {
 
 
 }
+
+TEST(tsdb_query_converter_test, test_metric_nomenclature) {
+
+    InfoReader info_reader;
+    info_reader.sample_rate = 125;
+    info_reader.channel_labels = {"ECG", "ECG", "asdf", "asdf"};
+
+    TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", second_clock::universal_time(), info_reader.sample_rate);
+    TsdbQueryConverter converter("awooga", info_reader, timestamp_calculator);
+
+
+    for (auto &s : converter.metrics) {
+        cout << s << endl;
+    }
+}
