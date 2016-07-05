@@ -3,6 +3,7 @@
 //
 
 #include <boost/program_options.hpp>
+
 namespace po = boost::program_options;
 
 #include <iostream>
@@ -16,8 +17,8 @@ using std::cerr;
 using std::string;
 
 void print_version_information(ostream& os) {
-    double version_number = 1.2;
-    os << "WvTools, version " << version_number << ", updated June 27th, 2016" << endl;
+    double version_number = 1.3;
+    os << "WvTools, version " << version_number << ", updated July 5th, 2016" << endl;
     os << "Author: Ran Liu, rliu14@jhu.edu" << endl;
 }
 
@@ -28,45 +29,47 @@ void print_help(const po::options_description& description, ostream& os) {
 int main(int argc, const char** argv) {
 
     po::options_description required("Required options");
-    // At first, I thought this was a clever case of using function pointers to return a function from another function.
-    // Then I realized it's an abomination of operator overloading.
     required.add_options()
-            ("record,r", po::value<string>(), "Record prefix of waveform data to read");
+            ("record,r", po::value<string>(), "Record prefix of waveform data set");
 
     po::options_description modes("Operating modes");
     modes.add_options()
-            ("version,v", "Prints version information for program.")
+            ("version", "Prints version information for the program")
             ("help,h", "Prints program usage help")
-            ("unscaled,u", "If this option is passed, the program prints unscaled data. Scaled is the default.")
-            ("physionet,p", "If this option is passed, the program writes a physionet header instead of amplitudes")
-            ("checksums,c", "If this option is passed, the program prints the checksums for each channel")
-            ("features,f", "If this option is passed, the program emits the feature vectors for the specified channel")
-            ("quality,q", "If this option is passed, the program outputs quality annotations.")
-            ("num-channels,n", "Program writes the number of channels contained in a record.")
-            ("tsdb,t", po::value<string>(), "Uploads data and quality annotations to TSDB.")
-            ("tsdb-annotations", po::value<string>(), "Uploads only quality annotations to TSDB.");
+            ("unscaled", "Prints unscaled data. Scaled is the default, if no operating mode is specified")
+            ("physionet,p", "Prints physionet header")
+            ("checksum", "Prints checksums for each channel")
+            ("features", "Emits feature vectors for specified channel")
+            ("quality", "Prints quality annotations for specified channel")
+            ("num-channels,n", "Prints number of channels contained in a record")
+            ("tsdb,t", "Uploads data and quality annotations to TSDB")
+            ("tsdb-annotations", "Uploads only quality annotations to TSDB");
 
 
-    po::options_description allowed("Allowed options");
-    allowed.add_options()
-            ("no-headers", "If this option is passed, the headers row is omitted")
-            ("svm,s", po::value<string>(), "Passes a file containing SVM parameters for quality checking.")
-            ("channel,x", po::value<int>(), "Quality values are emitted for the specified channel (0-indexed).")
-            ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations.");
+    po::options_description configurations("Program configurations");
+    configurations.add_options()
+            ("no-headers", "Omits header row when outputting data")
+            ("svm,s", po::value<string>(), "Specifies the file containing the parameters of the SVM used for quality checking")
+            ("channel,x", po::value<int>(), "Specifies the index of a channel for modes that operate on a single channel (0-indexed)")
+            ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations")
+            ("tsdb-root", po::value<string>(), "Url of OpenTSDB api root");
+
+    po::options_description config_file_options;
+    config_file_options.add(configurations);
+
+    po::options_description command_line_options;
+    command_line_options.add(required).add(modes).add(configurations);
 
     try {
-        // Parse command line, store in argument map.
-        po::options_description all("All options");
-        all.add(required).add(modes).add(allowed);
-
         po::variables_map argument_map;
-        po::store(po::parse_command_line(argc, argv, all), argument_map);
+        po::store(po::parse_command_line(argc, argv, command_line_options), argument_map);
+        po::store(po::parse_config_file<char>("/etc/wvtools.conf", config_file_options), argument_map);
         po::notify(argument_map);
 
         if (argument_map.count("help")) {
             print_help(required, cout);
             print_help(modes, cout);
-            print_help(allowed, cout);
+            print_help(configurations, cout);
         } else if (argument_map.count("version")) {
             print_version_information(cout);
         } else {
@@ -82,9 +85,6 @@ int main(int argc, const char** argv) {
             bool features = argument_map.count("features") > 0;
             bool tsdb = argument_map.count("tsdb") > 0;
             bool tsdb_annotations = argument_map.count("tsdb-annotations") > 0;
-
-            // Could do some more input validation, but if the user wants to put in contradictory parameters,
-            // they can live with unpredictable behavior.
 
             WvToolsFacade facade;
 
@@ -105,25 +105,27 @@ int main(int argc, const char** argv) {
                 facade.write_num_channels(cout, prefix);
             } else if (tsdb) {
                 unsigned int channel = (unsigned)argument_map["channel"].as<int>();
-                string tsdb_root = argument_map["tsdb"].as<string>();
+                string tsdb_root = argument_map["tsdb-root"].as<string>();
                 string svm = argument_map["svm"].as<string>();
                 string annotations = argument_map["annotations"].as<string>();
                 facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root);
             } else if (tsdb_annotations) {
                 unsigned int channel = (unsigned)argument_map["channel"].as<int>();
-                string tsdb_root = argument_map["tsdb-annotations"].as<string>();
+                string tsdb_root = argument_map["tsdb-root"].as<string>();
                 string svm = argument_map["svm"].as<string>();
                 string annotations = argument_map["annotations"].as<string>();
                 facade.tsdb_annotations_upload(prefix, channel, svm, annotations, tsdb_root);
             } else {
                 facade.write_data(cout, prefix, scaled, headers, false);
             }
+
         }
 
-    } catch (exception& e) {
+    } catch (exception &e) {
         cerr << e.what() << endl;
         print_help(required, cerr);
         print_help(modes, cerr);
-        print_help(allowed, cerr);
+        print_help(configurations, cerr);
     }
+
 }
