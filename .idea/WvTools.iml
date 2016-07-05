@@ -5,15 +5,16 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wvtools.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/ConfigFileReadTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/SvmParamsReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/InfoReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/ChecksumCalculatorTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/TimestampTest.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/WvReaderTest.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/RestApiTest.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test/TsdbQueryConverterTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/FeatureCalculatorTest.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/TsdbQueryConverterTest.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/RestApiTest.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/WvReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/QrsOnsetReaderTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test/TsdbUploaderTest.cpp" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
