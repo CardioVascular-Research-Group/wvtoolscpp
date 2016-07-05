@@ -43,7 +43,9 @@ int main(int argc, const char** argv) {
             ("quality", "Prints quality annotations for specified channel")
             ("num-channels,n", "Prints number of channels contained in a record")
             ("tsdb,t", "Uploads data and quality annotations to TSDB")
-            ("tsdb-annotations", "Uploads only quality annotations to TSDB");
+            ("tsdb-annotations", "Uploads only quality annotations to TSDB")
+            ("tsdb-check", "Checks if a record is in TSDB already")
+            ("tsdb-validate", "Queries a record in TSDB and checks annotations and data against local record");
 
 
     po::options_description configurations("Program configurations");

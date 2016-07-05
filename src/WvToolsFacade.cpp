@@ -171,7 +171,7 @@ void WvToolsFacade::tsdb_upload(const std::string &prefix, const unsigned int &c
         TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
         QualityChecker quality_checker(625, svm_params);
 
-        TsdbUploader tsdb_uploader(300, tsdb_root);
+        TsdbUploader tsdb_uploader(1000, tsdb_root);
         TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
 
         unsigned long current_index = 0;
