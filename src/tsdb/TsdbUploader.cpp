@@ -46,7 +46,13 @@ void TsdbUploader::add_annotation(const std::string &metric, const unsigned long
                                   const unsigned long &end_time, const std::string &description,
                                   const std::unordered_map<std::string, std::string> &tags) throw (IOException) {
     // First, we need to query and find the TSUID of the series.
-    string tsuid = query_tsuid(metric, start_time, tags);
+    string tsuid;
+    if (tsuid_cache.contains(metric, tags.at("subject_id"))) {
+        tsuid = tsuid_cache.get_tsuid(metric, tags.at("subject_id"));
+    } else {
+        tsuid = query_tsuid(metric, start_time, tags);
+        tsuid_cache.put(metric, tags.at("subject_id"), tsuid);
+    }
 
     json query = {
             {"startTime", start_time},

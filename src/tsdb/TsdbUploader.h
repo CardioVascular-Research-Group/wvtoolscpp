@@ -10,6 +10,7 @@
 
 #include "json.hpp"
 #include "../io/IOException.h"
+#include "TsuidCache.h"
 
 #include <gtest/gtest.h>
 
@@ -42,6 +43,8 @@ public:
     void flush() throw (IOException);
 
 private:
+    TsuidCache tsuid_cache;
+
     unsigned long max_queue_length;
     std::vector<data_entry> entry_queue;
 
