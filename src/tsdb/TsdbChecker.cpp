@@ -13,3 +13,8 @@ bool TsdbChecker::check_presence(const std::string &metric, const std::string &s
     return false;
 }
 
+bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader,
+                           InfoReader &info_reader) {
+    return false;
+}
+
