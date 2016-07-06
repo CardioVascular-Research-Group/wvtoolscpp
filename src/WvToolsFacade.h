@@ -18,7 +18,7 @@ public:
                            const bool &headers, const std::string &annotation_file);
     void write_features(std::ostream &os, const std::string &prefix, const unsigned int &channel, const bool &headers, const std::string &annotation_file);
     void write_num_channels(std::ostream & os, const std::string& prefix);
-    void tsdb_upload(const std::string& prefix, const unsigned int &channel, const std::string &svm, const std::string &qrs_file, const std::string& tsdb_root);
+    void tsdb_upload(const std::string& prefix, const unsigned int &channel, const std::string &svm, const std::string &qrs_file, const std::string& tsdb_root, const int& chunk_size);
     void tsdb_annotations_upload(const std::string& prefix, const unsigned int &channel, const std::string &svm, const std::string &qrs_file, const std::string& tsdb_root);
 };
 

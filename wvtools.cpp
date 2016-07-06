@@ -54,7 +54,8 @@ int main(int argc, const char** argv) {
             ("svm,s", po::value<string>(), "Specifies the file containing the parameters of the SVM used for quality checking")
             ("channel,x", po::value<int>(), "Specifies the index of a channel for modes that operate on a single channel (0-indexed)")
             ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations")
-            ("tsdb-root", po::value<string>(), "Url of OpenTSDB api root");
+            ("tsdb-root", po::value<string>(), "Url of OpenTSDB api root")
+            ("chunk-size", po::value<int>(), "Size of transmission chunk when uploading waveform data to TSDB.");
 
     po::options_description config_file_options;
     config_file_options.add(configurations);
@@ -106,11 +107,12 @@ int main(int argc, const char** argv) {
         } else if (num_channels) {
             facade.write_num_channels(cout, prefix);
         } else if (tsdb) {
+            int chunk_size = argument_map["chunk-size"].as<int>();
             unsigned int channel = (unsigned)argument_map["channel"].as<int>();
             string tsdb_root = argument_map["tsdb-root"].as<string>();
             string svm = argument_map["svm"].as<string>();
             string annotations = argument_map["annotations"].as<string>();
-            facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root);
+            facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root, chunk_size);
         } else if (tsdb_annotations) {
             unsigned int channel = (unsigned)argument_map["channel"].as<int>();
             string tsdb_root = argument_map["tsdb-root"].as<string>();
