@@ -17,7 +17,9 @@ QrsOnsetReader::QrsOnsetReader(const std::string &filename) throw (IOException) 
     if (file.is_open()) {
         do {
             getline(file, current_line);
-            if (current_line.length() > 0) qrs_onsets.push_back((unsigned long)stol(current_line));
+            if (current_line.length() > 0) {
+                qrs_onsets.push_back((unsigned long)stol(current_line));
+            }
         } while (current_line.length() > 0);
     } else {
         throw IOException("Couldn't read QRS onset file.");

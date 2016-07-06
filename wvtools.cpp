@@ -62,72 +62,67 @@ int main(int argc, const char** argv) {
     po::options_description command_line_options;
     command_line_options.add(required).add(modes).add(configurations);
 
-    try {
-        po::variables_map argument_map;
-        po::store(po::parse_command_line(argc, argv, command_line_options), argument_map);
-        po::store(po::parse_config_file<char>("/etc/wvtools.conf", config_file_options), argument_map);
-        po::notify(argument_map);
 
-        if (argument_map.count("help")) {
-            print_help(required, cout);
-            print_help(modes, cout);
-            print_help(configurations, cout);
-        } else if (argument_map.count("version")) {
-            print_version_information(cout);
+    po::variables_map argument_map;
+    po::store(po::parse_command_line(argc, argv, command_line_options), argument_map);
+    po::store(po::parse_config_file<char>("/etc/wvtools.conf", config_file_options), argument_map);
+    po::notify(argument_map);
+
+    if (argument_map.count("help")) {
+        print_help(required, cout);
+        print_help(modes, cout);
+        print_help(configurations, cout);
+    } else if (argument_map.count("version")) {
+        print_version_information(cout);
+    } else {
+
+        string prefix = argument_map["record"].as<string>();
+
+        bool headers = argument_map.count("no-headers") == 0;
+        bool physionet = argument_map.count("physionet") > 0;
+        bool checksums = argument_map.count("checksums") > 0;
+        bool scaled = argument_map.count("unscaled") == 0;
+        bool quality = argument_map.count("quality") > 0;
+        bool num_channels = argument_map.count("num-channels") > 0;
+        bool features = argument_map.count("features") > 0;
+        bool tsdb = argument_map.count("tsdb") > 0;
+        bool tsdb_annotations = argument_map.count("tsdb-annotations") > 0;
+
+        WvToolsFacade facade;
+
+        if (physionet) {
+            facade.write_physionet(cout, prefix);
+        } else if (checksums) {
+            facade.write_checksums(cout, prefix);
+        } else if (quality) {
+            unsigned int channel = (unsigned) argument_map["channel"].as<int>();
+            string svm = argument_map["svm"].as<string>();
+            string annotations = argument_map["annotations"].as<string>();
+            facade.write_quality(cout, prefix, channel, svm, headers, annotations);
+        } else if (features) {
+            unsigned int channel = (unsigned) argument_map["channel"].as<int>();
+            string annotations = argument_map["annotations"].as<string>();
+            facade.write_features(cout, prefix, channel, headers, annotations);
+        } else if (num_channels) {
+            facade.write_num_channels(cout, prefix);
+        } else if (tsdb) {
+            unsigned int channel = (unsigned)argument_map["channel"].as<int>();
+            string tsdb_root = argument_map["tsdb-root"].as<string>();
+            string svm = argument_map["svm"].as<string>();
+            string annotations = argument_map["annotations"].as<string>();
+            facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root);
+        } else if (tsdb_annotations) {
+            unsigned int channel = (unsigned)argument_map["channel"].as<int>();
+            string tsdb_root = argument_map["tsdb-root"].as<string>();
+            string svm = argument_map["svm"].as<string>();
+            string annotations = argument_map["annotations"].as<string>();
+            facade.tsdb_annotations_upload(prefix, channel, svm, annotations, tsdb_root);
         } else {
-
-            string prefix = argument_map["record"].as<string>();
-
-            bool headers = argument_map.count("no-headers") == 0;
-            bool physionet = argument_map.count("physionet") > 0;
-            bool checksums = argument_map.count("checksums") > 0;
-            bool scaled = argument_map.count("unscaled") == 0;
-            bool quality = argument_map.count("quality") > 0;
-            bool num_channels = argument_map.count("num-channels") > 0;
-            bool features = argument_map.count("features") > 0;
-            bool tsdb = argument_map.count("tsdb") > 0;
-            bool tsdb_annotations = argument_map.count("tsdb-annotations") > 0;
-
-            WvToolsFacade facade;
-
-            if (physionet) {
-                facade.write_physionet(cout, prefix);
-            } else if (checksums) {
-                facade.write_checksums(cout, prefix);
-            } else if (quality) {
-                unsigned int channel = (unsigned) argument_map["channel"].as<int>();
-                string svm = argument_map["svm"].as<string>();
-                string annotations = argument_map["annotations"].as<string>();
-                facade.write_quality(cout, prefix, channel, svm, headers, annotations);
-            } else if (features) {
-                unsigned int channel = (unsigned) argument_map["channel"].as<int>();
-                string annotations = argument_map["annotations"].as<string>();
-                facade.write_features(cout, prefix, channel, headers, annotations);
-            } else if (num_channels) {
-                facade.write_num_channels(cout, prefix);
-            } else if (tsdb) {
-                unsigned int channel = (unsigned)argument_map["channel"].as<int>();
-                string tsdb_root = argument_map["tsdb-root"].as<string>();
-                string svm = argument_map["svm"].as<string>();
-                string annotations = argument_map["annotations"].as<string>();
-                facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root);
-            } else if (tsdb_annotations) {
-                unsigned int channel = (unsigned)argument_map["channel"].as<int>();
-                string tsdb_root = argument_map["tsdb-root"].as<string>();
-                string svm = argument_map["svm"].as<string>();
-                string annotations = argument_map["annotations"].as<string>();
-                facade.tsdb_annotations_upload(prefix, channel, svm, annotations, tsdb_root);
-            } else {
-                facade.write_data(cout, prefix, scaled, headers, false);
-            }
-
+            facade.write_data(cout, prefix, scaled, headers, false);
         }
 
-    } catch (exception &e) {
-        cerr << e.what() << endl;
-        print_help(required, cerr);
-        print_help(modes, cerr);
-        print_help(configurations, cerr);
     }
+
+
 
 }
