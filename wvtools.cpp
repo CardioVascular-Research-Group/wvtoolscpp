@@ -88,6 +88,8 @@ int main(int argc, const char** argv) {
         bool features = argument_map.count("features") > 0;
         bool tsdb = argument_map.count("tsdb") > 0;
         bool tsdb_annotations = argument_map.count("tsdb-annotations") > 0;
+        bool tsdb_check = argument_map.count("tsdb-check") > 0;
+        bool tsdb_validate = argument_map.count("tsdb-validate") > 0;
 
         WvToolsFacade facade;
 
@@ -114,11 +116,17 @@ int main(int argc, const char** argv) {
             string annotations = argument_map["annotations"].as<string>();
             facade.tsdb_upload(prefix, channel, svm, annotations, tsdb_root, chunk_size);
         } else if (tsdb_annotations) {
-            unsigned int channel = (unsigned)argument_map["channel"].as<int>();
+            unsigned int channel = (unsigned) argument_map["channel"].as<int>();
             string tsdb_root = argument_map["tsdb-root"].as<string>();
             string svm = argument_map["svm"].as<string>();
             string annotations = argument_map["annotations"].as<string>();
             facade.tsdb_annotations_upload(prefix, channel, svm, annotations, tsdb_root);
+        } else if (tsdb_check) {
+            string tsdb_root = argument_map["tsdb-root"].as<string>();
+            facade.tsdb_check(prefix, tsdb_root);
+        } else if (tsdb_validate) {
+            string tsdb_root = argument_map["tsdb-root"].as<string>();
+            facade.tsdb_validate(prefix, tsdb_root);
         } else {
             facade.write_data(cout, prefix, scaled, headers, false);
         }

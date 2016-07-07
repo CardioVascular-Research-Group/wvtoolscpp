@@ -19,6 +19,7 @@ using std::endl;
 #include "util/TimestampCalculator.h"
 #include "io/TimestampReader.h"
 #include "tsdb/TsdbQueryConverter.h"
+#include "tsdb/TsdbChecker.h"
 
 using std::vector;
 
@@ -248,5 +249,20 @@ void WvToolsFacade::tsdb_annotations_upload(const std::string &prefix, const uns
     } catch (IOException &e) {
         cerr << e.get_message() << endl;
     }
+}
+
+
+void WvToolsFacade::tsdb_check(const std::string &prefix, const string& tsdb_root) {
+    try {
+        TsdbChecker tsdb_checker(tsdb_root);
+        InfoReader info_reader(prefix);
+    } catch (IOException &e) {
+        cerr << e.get_message() << endl;
+    }
+
+}
+
+void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_root) {
+
 }
 
