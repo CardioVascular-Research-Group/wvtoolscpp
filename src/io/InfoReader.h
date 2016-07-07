@@ -29,6 +29,7 @@ private:
     friend class PhysionetWriter;
     friend class WvToolsFacade;
     friend class TsdbQueryConverter;
+    friend class TsdbChecker;
 
     FRIEND_TEST(info_reader_test, initial);
     FRIEND_TEST(tsdb_query_converter_test, test_annotation_generation);

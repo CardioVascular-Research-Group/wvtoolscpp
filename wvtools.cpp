@@ -15,6 +15,7 @@ using std::endl;
 using std::exception;
 using std::cerr;
 using std::string;
+using std::vector;
 
 void print_version_information(ostream& os) {
     double version_number = 1.3;
@@ -45,7 +46,8 @@ int main(int argc, const char** argv) {
             ("tsdb,t", "Uploads data and quality annotations to TSDB")
             ("tsdb-annotations", "Uploads only quality annotations to TSDB")
             ("tsdb-check", "Checks if a record is in TSDB already")
-            ("tsdb-validate", "Queries a record in TSDB and checks annotations and data against local record");
+            ("tsdb-validate", "Queries a record in TSDB and checks annotations and data against local record")
+            ("tsdb-read", po::value<vector<string>>(), "Reads metrics from TSDB");
 
 
     po::options_description configurations("Program configurations");

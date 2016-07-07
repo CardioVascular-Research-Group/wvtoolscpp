@@ -303,7 +303,7 @@ void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_
 
         TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
 
-        auto validations = tsdb_checker.validate(info_reader, wv_reader, timestamp_reader, timestamp_calculator, query_size);
+        auto validations = tsdb_checker.validate(prefix, info_reader, wv_reader, timestamp_reader, timestamp_calculator, query_size);
 
         for (unsigned int c = 0; c < info_reader.num_channels(); c++) {
             if (c + 1 < info_reader.num_channels()) {

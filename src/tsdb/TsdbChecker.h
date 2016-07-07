@@ -15,7 +15,7 @@ class TsdbChecker {
 public:
     TsdbChecker(const std::string& tsdb_root);
     bool check_presence(const std::string& metric, const std::string& subject_id, const unsigned long& start_time);
-    std::vector<bool> validate(InfoReader& info_reader, WvReader& wv_reader, TimestampReader& timestamp_reader, TimestampCalculator& timestamp_calculator, const int& query_size);
+    std::vector<bool> validate(const std::string& prefix, InfoReader& info_reader, WvReader& wv_reader, TimestampReader& timestamp_reader, TimestampCalculator& timestamp_calculator, const int& query_size);
 private:
     std::string tsdb_root;
 };
