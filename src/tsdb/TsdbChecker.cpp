@@ -40,36 +40,12 @@ bool TsdbChecker::check_presence(const std::string &metric, const std::string &s
     return (response.code == 200) && (response.body != "[]");
 }
 
-bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader, InfoReader &info_reader, TimestampReader& timestamp_reader, TimestampCalculator& timestamp_calculator, const int& query_size) {
 
-    unsigned long current_index = 0;
-
-    vector<json> queries;
-    queries.push_back(
-            {
-                    {"aggregator", "avg"},
-                    {"metric", metric},
-                    {"tags", {{"subject_id", subject_id}}}
-            }
-    );
-
-    while (current_index < wv_reader.num_entries() / info_reader.num_channels()) {
-        json query = {
-          {"start"},
-          {"end"},
-          {"msResolution", true},
-          {"queries", queries}
-        };
-
-        RestClient::Response response = RestClient::post(tsdb_root + "/api/query", "application/json", query.dump());
-        json parsed_response = json::parse(response.body);
-
-        current_index += query_size;
-    }
+std::vector<bool> TsdbChecker::validate(InfoReader &info_reader, WvReader &wv_reader, TimestampReader &timestamp_reader, TimestampCalculator &timestamp_calculator, const int &query_size) {
+    vector<bool> result;
 
 
 
-
-    return false;
+    return result;
 }
 

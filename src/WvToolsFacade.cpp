@@ -5,6 +5,7 @@
 #include <iostream>
 using std::cout;
 using std::cerr;
+using std::string;
 using std::endl;
 
 #include "WvToolsFacade.h"
@@ -295,11 +296,14 @@ void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_
 
     try {
         TsdbChecker tsdb_checker(tsdb_root);
-        TimestampReader timestamp_reader(prefix);
         InfoReader info_reader(prefix);
-
+        WvReader wv_reader(prefix);
+        TimestampReader timestamp_reader(prefix);
         TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
+
         TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
+
+        auto validations = tsdb_checker.validate(info_reader, wv_reader, timestamp_reader, timestamp_calculator, query_size);
 
         for (unsigned int c = 0; c < info_reader.num_channels(); c++) {
             if (c + 1 < info_reader.num_channels()) {
@@ -308,24 +312,24 @@ void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_
                 cout << query_converter.metrics[c] << endl;
             }
         }
-        for (unsigned int c = 0; c < info_reader.num_channels(); c++) {
-            WvReader wv_reader(prefix);
-            if (tsdb_checker.validate(query_converter.metrics[c], prefix, wv_reader, info_reader, timestamp_reader, timestamp_calculator, query_size)) {
-                if (c + 1 < info_reader.num_channels()) {
+
+        for (unsigned int c = 0; c < validations.size(); c++) {
+            if (c + 1 < validations.size()) {
+                if (validations[c]) {
                     cout << 1 << "\t";
                 } else {
-                    cout << 1 << endl;
+                    cout << 0 << "\t";
                 }
             } else {
-                if (c + 1 < info_reader.num_channels()) {
-                    cout << 0 << "\t";
+                if (validations[c]) {
+                    cout << 1 << endl;
                 } else {
                     cout << 0 << endl;
                 }
             }
         }
 
-    } catch (IOException& e) {
+    } catch (IOException &e) {
         cerr << e.get_message() << endl;
     }
 
