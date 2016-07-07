@@ -24,6 +24,7 @@ using std::endl;
 using std::vector;
 
 // TODO refactor these methods. They could be more DRY.
+// Parameters for timestamp calculator could probably be dependency injected.
 
 void WvToolsFacade::write_data(std::ostream &os, const std::string &prefix, const bool &scaled, const bool &headers, const bool &timestamps) {
     try {
