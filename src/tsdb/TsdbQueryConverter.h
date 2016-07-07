@@ -30,6 +30,7 @@ private:
     bool contains(std::vector<std::string>& v, std::string value);
 
     friend class WvToolsFacade;
+    friend class TsdbChecker;
 
     FRIEND_TEST(tsdb_query_converter_test, test_metric_nomenclature);
     FRIEND_TEST(tsdb_query_converter_test, test_metric_nomenclature_on_file_read);
