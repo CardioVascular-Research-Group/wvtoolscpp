@@ -310,7 +310,7 @@ void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_
         }
         for (unsigned int c = 0; c < info_reader.num_channels(); c++) {
             WvReader wv_reader(prefix);
-            if (tsdb_checker.validate(query_converter.metrics[c], prefix, wv_reader, info_reader, timestamp_reader, query_size)) {
+            if (tsdb_checker.validate(query_converter.metrics[c], prefix, wv_reader, info_reader, timestamp_reader, timestamp_calculator, query_size)) {
                 if (c + 1 < info_reader.num_channels()) {
                     cout << 1 << "\t";
                 } else {

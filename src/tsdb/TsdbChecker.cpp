@@ -40,7 +40,7 @@ bool TsdbChecker::check_presence(const std::string &metric, const std::string &s
     return (response.code == 200) && (response.body != "[]");
 }
 
-bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader, InfoReader &info_reader, TimestampReader& timestamp_reader, const int& query_size) {
+bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader, InfoReader &info_reader, TimestampReader& timestamp_reader, TimestampCalculator& timestamp_calculator, const int& query_size) {
 
     unsigned long current_index = 0;
 
@@ -62,6 +62,9 @@ bool TsdbChecker::validate(const std::string &metric, const std::string &subject
         };
 
         RestClient::Response response = RestClient::post(tsdb_root + "/api/query", "application/json", query.dump());
+        json parsed_response = json::parse(response.body);
+
+        current_index += query_size;
     }
 
 
