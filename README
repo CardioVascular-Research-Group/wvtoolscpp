@@ -1,5 +1,5 @@
 WVTools, C++ Implementation
-v1.4 (updated Wednesday, July 6th 2016)
+v1.41 (updated Thursday, July 7th 2016)
 Ran Liu (rliu14@jhu.edu)
 
 A C++ utility to read data from Phillips 16-bit little-endian waveform files.
