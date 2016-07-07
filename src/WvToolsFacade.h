@@ -21,6 +21,6 @@ public:
     void tsdb_upload(const std::string& prefix, const unsigned int &channel, const std::string &svm, const std::string &qrs_file, const std::string& tsdb_root, const int& chunk_size);
     void tsdb_annotations_upload(const std::string& prefix, const unsigned int &channel, const std::string &svm, const std::string &qrs_file, const std::string& tsdb_root);
     void tsdb_check(const std::string& prefix, const std::string& tsdb_root);
-    void tsdb_validate(const std::string& prefix, const std::string& tsdb_root);
+    void tsdb_validate(const std::string& prefix, const std::string& tsdb_root, const int& query_size);
 };
 

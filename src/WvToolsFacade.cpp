@@ -290,7 +290,22 @@ void WvToolsFacade::tsdb_check(const std::string &prefix, const string& tsdb_roo
 
 }
 
-void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_root) {
+void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_root, const int& query_size) {
+
+    try {
+        TsdbChecker tsdb_checker(tsdb_root);
+        TimestampReader timestamp_reader(prefix);
+        InfoReader info_reader(prefix);
+        WvReader wvReader(prefix);
+
+        TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
+        TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
+
+        // TODO
+
+    } catch (IOException& e) {
+        cerr << e.get_message() << endl;
+    }
 
 }
 

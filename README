@@ -19,30 +19,42 @@ libcurl
 Usage: wvtools [options]
 
 Required options:
-  -r [ --record ] arg   Record prefix of waveform data to read
+  -r [ --record ] arg   Record prefix of waveform data set
 
 Operating modes:
-  -v [ --version ]       Prints version information for program.
+  --version              Prints version information for the program
   -h [ --help ]          Prints program usage help
-  -u [ --unscaled ]      If this option is passed, the program prints unscaled
-                         data. Scaled is the default.
-  -p [ --physionet ]     If this option is passed, the program writes a
-                         physionet header instead of amplitudes
-  -c [ --checksums ]     If this option is passed, the program prints the
-                         checksums for each channel
-  -f [ --features ]      If this option is passed, the program emits the
-                         feature vectors for the specified channel
-  -q [ --quality ]       If this option is passed, the program outputs quality
-                         annotations.
-  -n [ --num-channels ]  Program writes the number of channels contained in a
-                         record.
-  -t [ --tsdb ] arg      Uploads data and quality annotations to TSDB.
-  --tsdb-annotations arg Uploads only quality annotations to TSDB.
+  --unscaled             Prints unscaled data. Scaled is the default, if no
+                         operating mode is specified
+  -p [ --physionet ]     Prints physionet header
+  --checksum             Prints checksums for each channel
+  --features             Emits feature vectors for specified channel
+  --quality              Prints quality annotations for specified channel
+  -n [ --num-channels ]  Prints number of channels contained in a record
+  -t [ --tsdb ]          Uploads data and quality annotations to TSDB
+  --tsdb-annotations     Uploads only quality annotations to TSDB
+  --tsdb-check           Checks if a record is in TSDB already
+  --tsdb-validate        Queries a record in TSDB and checks annotations and
+                         data against local record
 
-Allowed options:
-  --no-headers             If this option is passed, the headers row is omitted
-  -s [ --svm ] arg         Passes a file containing SVM parameters for quality
-                           checking.
-  -x [ --channel ] arg     Quality values are emitted for the specified channel
-                           (0-indexed).
-  -a [ --annotations ] arg Filename containing QRS onset annotations.
+Program configurations:
+  --no-headers             Omits header row when outputting data
+  -s [ --svm ] arg         Specifies the file containing the parameters of the
+                           SVM used for quality checking
+  -x [ --channel ] arg     Specifies the index of a channel for modes that
+                           operate on a single channel (0-indexed)
+  -a [ --annotations ] arg Filename containing QRS onset annotations
+  --tsdb-root arg          Url of OpenTSDB api root
+  --chunk-size arg         Size of transmission chunk when uploading waveform
+                           data to TSDB.
+  --query-size arg         Size of transmission chunk when querying waveform
+                           data in TSDB for validation.
+
+Configuration file is /etc/wvtools.conf; All parameters in program configurations can be specified in this file.
+
+Format:
+# Line comments are denoted by the pound sign
+channel=0
+tsdb-root=http://localhost:3001
+chunk-size=5000
+query-size=1000

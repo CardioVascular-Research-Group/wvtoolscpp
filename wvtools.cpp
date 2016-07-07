@@ -55,7 +55,8 @@ int main(int argc, const char** argv) {
             ("channel,x", po::value<int>(), "Specifies the index of a channel for modes that operate on a single channel (0-indexed)")
             ("annotations,a", po::value<string>(), "Filename containing QRS onset annotations")
             ("tsdb-root", po::value<string>(), "Url of OpenTSDB api root")
-            ("chunk-size", po::value<int>(), "Size of transmission chunk when uploading waveform data to TSDB.");
+            ("chunk-size", po::value<int>(), "Size of transmission chunk when uploading waveform data to TSDB.")
+            ("query-size", po::value<int>(), "Size of transmission chunk when querying waveform data in TSDB for validation.");
 
     po::options_description config_file_options;
     config_file_options.add(configurations);
@@ -126,7 +127,8 @@ int main(int argc, const char** argv) {
             facade.tsdb_check(prefix, tsdb_root);
         } else if (tsdb_validate) {
             string tsdb_root = argument_map["tsdb-root"].as<string>();
-            facade.tsdb_validate(prefix, tsdb_root);
+            int query_size = argument_map["query-size"].as<int>();
+            facade.tsdb_validate(prefix, tsdb_root, query_size);
         } else {
             facade.write_data(cout, prefix, scaled, headers, false);
         }
