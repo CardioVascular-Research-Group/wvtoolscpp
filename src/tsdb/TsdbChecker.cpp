@@ -24,7 +24,7 @@ bool TsdbChecker::check_presence(const std::string &metric, const std::string &s
     queries.push_back(
             {
                     {"aggregator", "avg"},
-                    {"metric", "metric"},
+                    {"metric", metric},
                     {"tags", {{"subject_id", subject_id}}}
             }
     );
@@ -40,7 +40,7 @@ bool TsdbChecker::check_presence(const std::string &metric, const std::string &s
     query["msResolution"] = true;
 
     RestClient::Response response = RestClient::post(tsdb_root + "/api/query", "application/json", query.dump());
-    return response.body != "[]";
+    return (response.code == 200) && (response.body != "[]");
 }
 
 bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader, InfoReader &info_reader, TimestampReader& timestamp_reader) {
