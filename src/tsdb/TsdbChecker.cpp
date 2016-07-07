@@ -43,7 +43,9 @@ bool TsdbChecker::check_presence(const std::string &metric, const std::string &s
     return (response.code == 200) && (response.body != "[]");
 }
 
-bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader, InfoReader &info_reader, TimestampReader& timestamp_reader) {
+bool TsdbChecker::validate(const std::string &metric, const std::string &subject_id, WvReader &wv_reader, InfoReader &info_reader, TimestampReader& timestamp_reader, const int& query_size) {
+
+
 
     return false;
 }

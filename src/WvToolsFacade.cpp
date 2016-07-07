@@ -296,12 +296,33 @@ void WvToolsFacade::tsdb_validate(const std::string &prefix, const string& tsdb_
         TsdbChecker tsdb_checker(tsdb_root);
         TimestampReader timestamp_reader(prefix);
         InfoReader info_reader(prefix);
-        WvReader wvReader(prefix);
 
         TimestampCalculator timestamp_calculator("%Y-%m-%d %H:%M:%s", timestamp_reader.start_time, info_reader.sample_rate);
         TsdbQueryConverter query_converter(prefix, info_reader, timestamp_calculator);
 
-        // TODO
+        for (unsigned int c = 0; c < info_reader.num_channels(); c++) {
+            if (c + 1 < info_reader.num_channels()) {
+                cout << query_converter.metrics[c] << "\t";
+            } else {
+                cout << query_converter.metrics[c] << endl;
+            }
+        }
+        for (unsigned int c = 0; c < info_reader.num_channels(); c++) {
+            WvReader wv_reader(prefix);
+            if (tsdb_checker.validate(query_converter.metrics[c], prefix, wv_reader, info_reader, timestamp_reader, query_size)) {
+                if (c + 1 < info_reader.num_channels()) {
+                    cout << 1 << "\t";
+                } else {
+                    cout << 1 << endl;
+                }
+            } else {
+                if (c + 1 < info_reader.num_channels()) {
+                    cout << 0 << "\t";
+                } else {
+                    cout << 0 << endl;
+                }
+            }
+        }
 
     } catch (IOException& e) {
         cerr << e.get_message() << endl;
