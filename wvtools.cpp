@@ -18,8 +18,8 @@ using std::string;
 using std::vector;
 
 void print_version_information(ostream& os) {
-    double version_number = 1.3;
-    os << "WvTools, version " << version_number << ", updated July 5th, 2016" << endl;
+    double version_number = 1.41;
+    os << "WvTools, version " << version_number << ", updated July 8th, 2016" << endl;
     os << "Author: Ran Liu, rliu14@jhu.edu" << endl;
 }
 
@@ -84,7 +84,7 @@ int main(int argc, const char** argv) {
 
         bool headers = argument_map.count("no-headers") == 0;
         bool physionet = argument_map.count("physionet") > 0;
-        bool checksums = argument_map.count("checksums") > 0;
+        bool checksums = argument_map.count("checksum") > 0;
         bool scaled = argument_map.count("unscaled") == 0;
         bool quality = argument_map.count("quality") > 0;
         bool num_channels = argument_map.count("num-channels") > 0;

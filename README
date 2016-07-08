@@ -57,4 +57,4 @@ Format:
 channel=0
 tsdb-root=http://localhost:3001
 chunk-size=5000
-query-size=1000
+query-size=5000
